@@ -1,80 +1,121 @@
 import React, { useState } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
-import { Button, Text } from 'react-native-paper';
-import QuizQuestion from '../components/QuizQuestion';
-import colors from '../constants/colors';
+import { View, StyleSheet, ScrollView } from 'react-native';
+import { Text, Button, Card, RadioButton } from 'react-native-paper';
+import { QUIZ_DATA } from '../data/courseData';
 
 const QuizScreen = ({ route, navigation }) => {
-  const { quiz } = route.params;
+  const { moduleId, moduleTitle } = route.params;
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [selectedAnswers, setSelectedAnswers] = useState({});
+  const [selectedAnswer, setSelectedAnswer] = useState('');
+  const [score, setScore] = useState(0);
   const [showResults, setShowResults] = useState(false);
 
-  const handleAnswerSelect = (answer) => {
-    setSelectedAnswers({
-      ...selectedAnswers,
-      [currentQuestionIndex]: answer,
-    });
-  };
+  const questions = QUIZ_DATA[moduleId];
 
-  const calculateScore = () => {
-    let correctAnswers = 0;
-    quiz.questions.forEach((question, index) => {
-      if (selectedAnswers[index] === question.correctAnswer) {
-        correctAnswers++;
-      }
-    });
-    return (correctAnswers / quiz.questions.length) * 100;
-  };
-
-  const handleSubmit = () => {
-    if (currentQuestionIndex < quiz.questions.length - 1) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
-    } else {
-      setShowResults(true);
-    }
-  };
-
-  if (showResults) {
-    const score = calculateScore();
+  if (!questions || questions.length === 0) {
     return (
       <View style={styles.container}>
-        <Text variant="headlineMedium" style={styles.scoreText}>
-          Score: {Math.round(score)}%
-        </Text>
-        <Button
-          mode="contained"
+        <Text style={styles.errorText}>Aucun quiz disponible pour ce module.</Text>
+        <Button 
+          mode="contained" 
           onPress={() => navigation.goBack()}
           style={styles.button}
         >
-          Terminer
+          Retour
         </Button>
       </View>
     );
   }
 
-  const currentQuestion = quiz.questions[currentQuestionIndex];
+  const currentQuestion = questions[currentQuestionIndex];
+
+  const handleAnswer = (answer) => {
+    setSelectedAnswer(answer);
+  };
+
+  const handleNext = () => {
+    if (selectedAnswer === currentQuestion.correctAnswer) {
+      setScore(score + 1);
+    }
+
+    if (currentQuestionIndex < questions.length - 1) {
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
+      setSelectedAnswer('');
+    } else {
+      setShowResults(true);
+    }
+  };
+
+  const handleRetry = () => {
+    setCurrentQuestionIndex(0);
+    setSelectedAnswer('');
+    setScore(0);
+    setShowResults(false);
+  };
+
+  if (showResults) {
+    return (
+      <View style={styles.container}>
+        <Card style={styles.resultCard}>
+          <Card.Content>
+            <Text style={styles.resultTitle}>Quiz terminé !</Text>
+            <Text style={styles.scoreText}>
+              Score: {score}/{questions.length}
+            </Text>
+            <Text style={styles.percentageText}>
+              ({Math.round((score / questions.length) * 100)}%)
+            </Text>
+          </Card.Content>
+        </Card>
+        <Button 
+          mode="contained" 
+          onPress={handleRetry}
+          style={styles.button}
+        >
+          Réessayer
+        </Button>
+        <Button 
+          mode="outlined" 
+          onPress={() => navigation.goBack()}
+          style={styles.button}
+        >
+          Retour au module
+        </Button>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContent}>
-        <Text variant="titleLarge" style={styles.progress}>
-          Question {currentQuestionIndex + 1}/{quiz.questions.length}
+      <ScrollView>
+        <Text style={styles.progress}>
+          Question {currentQuestionIndex + 1}/{questions.length}
         </Text>
-        <QuizQuestion
-          question={currentQuestion.question}
-          options={currentQuestion.options}
-          selectedAnswer={selectedAnswers[currentQuestionIndex]}
-          onAnswerSelect={handleAnswerSelect}
-        />
+        
+        <Card style={styles.questionCard}>
+          <Card.Content>
+            <Text style={styles.questionText}>{currentQuestion.question}</Text>
+            <RadioButton.Group onValueChange={handleAnswer} value={selectedAnswer}>
+              {currentQuestion.options.map((option, index) => (
+                <RadioButton.Item
+                  key={index}
+                  label={option}
+                  value={option}
+                  style={styles.radioItem}
+                />
+              ))}
+            </RadioButton.Group>
+          </Card.Content>
+        </Card>
       </ScrollView>
-      <Button
-        mode="contained"
-        onPress={handleSubmit}
+
+      <Button 
+        mode="contained" 
+        onPress={handleNext}
+        disabled={!selectedAnswer}
         style={styles.button}
-        disabled={!selectedAnswers[currentQuestionIndex]}
       >
-        {currentQuestionIndex < quiz.questions.length - 1 ? 'Suivant' : 'Terminer'}
+        {currentQuestionIndex < questions.length - 1 ? 'Suivant' : 'Terminer'}
       </Button>
     </View>
   );
@@ -83,25 +124,50 @@ const QuizScreen = ({ route, navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background,
     padding: 16,
-  },
-  scrollContent: {
-    flexGrow: 1,
+    backgroundColor: '#f5f5f5',
   },
   progress: {
-    textAlign: 'center',
+    fontSize: 18,
     marginBottom: 16,
-    color: colors.text,
+    textAlign: 'center',
+  },
+  questionCard: {
+    marginBottom: 16,
+    elevation: 4,
+  },
+  questionText: {
+    fontSize: 18,
+    marginBottom: 16,
+  },
+  radioItem: {
+    marginVertical: 4,
   },
   button: {
-    marginTop: 16,
+    marginVertical: 8,
+  },
+  resultCard: {
+    marginBottom: 16,
+    elevation: 4,
+  },
+  resultTitle: {
+    fontSize: 24,
+    textAlign: 'center',
     marginBottom: 16,
   },
   scoreText: {
+    fontSize: 20,
     textAlign: 'center',
-    marginVertical: 24,
-    color: colors.text,
+  },
+  percentageText: {
+    fontSize: 18,
+    textAlign: 'center',
+    color: '#666',
+  },
+  errorText: {
+    fontSize: 16,
+    textAlign: 'center',
+    marginBottom: 16,
   },
 });
 

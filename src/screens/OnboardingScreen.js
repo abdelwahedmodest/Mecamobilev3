@@ -3,6 +3,7 @@ import { View, StyleSheet, Image, Dimensions } from 'react-native';
 import { Button, Text, Surface, ProgressBar } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import colors from '../constants/colors';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const OnboardingScreen = ({ navigation }) => {
   const [currentPage, setCurrentPage] = useState(0);
@@ -31,16 +32,18 @@ const OnboardingScreen = ({ navigation }) => {
     }
   ];
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (currentPage < onboardingData.length - 1) {
       setCurrentPage(currentPage + 1);
     } else {
-      navigation.replace('Login');
+      await AsyncStorage.setItem('hasSeenOnboarding', 'true');
+      navigation.replace('Auth');
     }
   };
 
-  const handleSkip = () => {
-    navigation.replace('Login');
+  const handleSkip = async () => {
+    await AsyncStorage.setItem('hasSeenOnboarding', 'true');
+    navigation.replace('Auth');
   };
 
   return (

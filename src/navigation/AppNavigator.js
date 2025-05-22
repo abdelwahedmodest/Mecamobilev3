@@ -1,6 +1,7 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 import { useAuth } from '../context/AuthContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import CourseDetailScreen from '../screens/CourseDetailScreen';
 import ForgotPasswordScreen from '../screens/ForgotPasswordScreen';
 import LessonScreen from '../screens/LessonScreen';
@@ -9,8 +10,36 @@ import ProfileScreen from '../screens/ProfileScreen';
 import QuizScreen from '../screens/QuizScreen';
 import RegisterScreen from '../screens/RegisterScreen';
 import TabNavigator from './TabNavigator';
+import ModuleTypeScreen from '../screens/ModuleTypeScreen';
+import ContentScreen from '../screens/ContentScreen';
+import ImageScreen from '../screens/ImageScreen';
+import VideoScreen from '../screens/VideoScreen';
+import OnboardingScreen from '../screens/OnboardingScreen';
 
 const Stack = createStackNavigator();
+
+const AppNavigator = () => {
+  const { isAuthenticated } = useAuth();
+  const [hasSeenOnboarding, setHasSeenOnboarding] = React.useState(false);
+
+  React.useEffect(() => {
+    // Check if user has seen onboarding
+    AsyncStorage.getItem('hasSeenOnboarding').then(value => {
+      setHasSeenOnboarding(value === 'true');
+    });
+  }, []);
+
+  return (
+    <Stack.Navigator
+      initialRouteName={hasSeenOnboarding ? (isAuthenticated ? 'Main' : 'Auth') : 'Onboarding'}
+      screenOptions={{ headerShown: false }}
+    >
+      <Stack.Screen name="Onboarding" component={OnboardingScreen} />
+      <Stack.Screen name="Auth" component={AuthStack} />
+      <Stack.Screen name="Main" component={MainStack} />
+    </Stack.Navigator>
+  );
+};
 
 const AuthStack = () => (
   <Stack.Navigator screenOptions={{ headerShown: false }}>
@@ -57,10 +86,10 @@ const MainStack = () => (
     />
     <Stack.Screen 
       name="Quiz" 
-      component={QuizScreen} 
+      component={QuizScreen}
       options={({ route }) => ({ 
-        title: `Quiz: ${route.params.moduleTitle}` || 'Quiz' 
-      })} 
+        title: `Quiz - ${route.params.moduleTitle}`,
+      })}
     />
     <Stack.Screen 
       name="ProfileScreen"
@@ -70,17 +99,11 @@ const MainStack = () => (
         headerBackTitle: 'Retour',
       }}
     />
+    <Stack.Screen name="ModuleType" component={ModuleTypeScreen} />
+    <Stack.Screen name="ContentScreen" component={ContentScreen} />
+    <Stack.Screen name="ImageScreen" component={ImageScreen} />
+    <Stack.Screen name="VideoScreen" component={VideoScreen} />
   </Stack.Navigator>
 );
-
-const AppNavigator = () => {
-  const { isAuthenticated } = useAuth();
-
-  return (
-    <>
-      {!isAuthenticated ? <AuthStack /> : <MainStack />}
-    </>
-  );
-};
 
 export default AppNavigator;

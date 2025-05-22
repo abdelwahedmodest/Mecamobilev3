@@ -1,27 +1,38 @@
+// Importation des dépendances React nécessaires
 import React, { useRef, useState } from 'react';
 import {
   Button,
-  Dimensions,
-  Image,
-  Linking,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View
+  Dimensions,     // Pour obtenir les dimensions de l'écran
+  Image,          // Pour afficher des images
+  Linking,        // Pour ouvrir des URLs externes
+  ScrollView,     // Pour le défilement
+  StyleSheet,     // Pour la stylisation
+  Text,           // Pour afficher du texte
+  TouchableOpacity, // Pour les boutons personnalisés
+  View,           // Pour les conteneurs
+  Animated        // Pour les animations
 } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons'; // Make sure to install this package
-import { LESSON_CONTENT } from '../data/courseData'; // Import lesson data
+import Icon from 'react-native-vector-icons/MaterialIcons'; // Pour les icônes Material Design
+import { LESSON_CONTENT } from '../data/courseData'; // Données des leçons
 
+// Composant principal de l'écran de leçon
 const LessonScreen = ({ route, navigation }) => {
-  const { moduleId, moduleTitle } = route.params; // courseId is also available if needed
+  // Extraction des paramètres de navigation
+  const { moduleId, moduleTitle } = route.params;
+  // Récupération des données de la leçon
   const lesson = LESSON_CONTENT[moduleId];
-  const scrollViewRef = useRef(null);
-  const [imageError, setImageError] = useState(false);
+  
+  // Références et états
+  const scrollViewRef = useRef(null);                          // Référence pour le ScrollView
+  const [imageError, setImageError] = useState(false);         // Gestion des erreurs d'image
+  const [scrollViewHeight, setScrollViewHeight] = useState(0); // Hauteur de la vue scrollable
+  const [contentHeight, setContentHeight] = useState(0);       // Hauteur du contenu
+  const scrollY = useRef(new Animated.Value(0)).current;      // Position de défilement animée
 
-  const windowHeight = Dimensions.get('window').height;
+  // Dimensions de l'écran (only keep what's used)
   const windowWidth = Dimensions.get('window').width;
 
+  // Gestion du cas où la leçon n'existe pas
   if (!lesson) {
     return (
       <View style={styles.container}>
@@ -32,6 +43,7 @@ const LessonScreen = ({ route, navigation }) => {
     );
   }
 
+  // Fonction pour ouvrir les vidéos externes
   const openVideo = () => {
     if (lesson.videoUrl) {
       Linking.canOpenURL(lesson.videoUrl).then(supported => {
@@ -44,6 +56,7 @@ const LessonScreen = ({ route, navigation }) => {
     }
   };
 
+  // Fonctions de défilement
   const scrollToTop = () => {
     scrollViewRef.current?.scrollTo({ y: 0, animated: true });
   };
@@ -52,86 +65,123 @@ const LessonScreen = ({ route, navigation }) => {
     scrollViewRef.current?.scrollToEnd({ animated: true });
   };
 
+  // Gestionnaire d'événement de défilement pour l'animation
+  const handleScroll = Animated.event(
+    [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+    { useNativeDriver: false }
+  );
+
+  // Structure du rendu
   return (
     <View style={styles.mainContainer}>
-      <ScrollView 
-        ref={scrollViewRef}
-        style={styles.scrollView}
-        contentContainerStyle={styles.contentContainer}
-        showsVerticalScrollIndicator={true}
-        persistentScrollbar={true}
-        scrollEventThrottle={16}
-        overScrollMode="always"
-        bounces={true}
-      >
-        <View style={styles.content}>
-          <Text style={styles.moduleTitleText}>Module : {moduleTitle}</Text>
-          <Text style={styles.lessonTitle}>{lesson.title}</Text>
-          
-          {/* Text content first */}
-          <View style={styles.textWrapper}>
-            <Text style={styles.textContent}>
-              {lesson.textContent}
-            </Text>
-          </View>
-          
-          {/* Image after text */}
-          {lesson.imageUrl && 
-            <View style={styles.imageContainer}>
-              <Image 
-                source={imageError ? require('../assets/placeholder.png') : { uri: lesson.imageUrl }}
-                style={[styles.image, { width: windowWidth - 32 }]}
-                resizeMode="contain"
-                onError={() => setImageError(true)}
-              />
+      <View style={styles.scrollContainer}>
+        {/* ScrollView principal avec gestion du défilement */}
+        <ScrollView 
+          ref={scrollViewRef}
+          style={styles.scrollView}
+          contentContainerStyle={styles.contentContainer}
+          showsVerticalScrollIndicator={false}
+          scrollEventThrottle={16}
+          onScroll={handleScroll}
+          onLayout={(event) => {
+            setScrollViewHeight(event.nativeEvent.layout.height);
+          }}
+          onContentSizeChange={(width, height) => {
+            setContentHeight(height);
+          }}
+        >
+          {/* Contenu de la leçon */}
+          <View style={styles.content}>
+            {/* En-tête de la leçon */}
+            <Text style={styles.moduleTitleText}>Module : {moduleTitle}</Text>
+            <Text style={styles.lessonTitle}>{lesson.title}</Text>
+            
+            {/* Contenu textuel */}
+            <View style={styles.textWrapper}>
+              <Text style={styles.textContent}>
+                {lesson.textContent}
+              </Text>
             </View>
-          }
-          
-          {/* Video after image */}
-          {lesson.videoUrl && 
-            <View style={styles.videoContainer}>
-              <TouchableOpacity 
-                style={styles.videoButton} 
-                onPress={openVideo}
-              >
-                <Icon name="play-circle-filled" size={50} color="#2196F3" />
-                <Text style={styles.videoButtonText}>Regarder la vidéo</Text>
-              </TouchableOpacity>
-              <Text style={styles.videoNote}>Remarque : Ceci ouvrira YouTube ou un navigateur.</Text>
-            </View>
-          }
+            
+            {/* Image de la leçon avec gestion des erreurs */}
+            {lesson.imageUrl && 
+              <View style={styles.imageContainer}>
+                <Image 
+                  source={imageError ? require('../assets/placeholder.png') : { uri: lesson.imageUrl }}
+                  style={[styles.image, { width: windowWidth - 32 }]}
+                  resizeMode="contain"
+                  onError={() => setImageError(true)}
+                />
+              </View>
+            }
+            
+            {/* Section vidéo si disponible */}
+            {lesson.videoUrl && 
+              <View style={styles.videoContainer}>
+                <TouchableOpacity 
+                  style={styles.videoButton} 
+                  onPress={openVideo}
+                >
+                  <Icon name="play-circle-filled" size={50} color="#2196F3" />
+                  <Text style={styles.videoButtonText}>Regarder la vidéo</Text>
+                </TouchableOpacity>
+                <Text style={styles.videoNote}>Remarque : Ceci ouvrira YouTube ou un navigateur.</Text>
+              </View>
+            }
 
-          {/* Rest of the navigation buttons */}
-          <View style={styles.navigationButtons}>
-            <Button title="Leçon Précédente" onPress={() => alert('Logique de navigation vers leçon précédente à implémenter')} disabled />
-            <Button title="Leçon Suivante" onPress={() => alert('Logique de navigation vers leçon suivante à implémenter')} disabled />
+            {/* Boutons de navigation */}
+            <View style={styles.navigationButtons}>
+              <Button title="Leçon Précédente" onPress={() => alert('Logique de navigation vers leçon précédente à implémenter')} disabled />
+              <Button title="Leçon Suivante" onPress={() => alert('Logique de navigation vers leçon suivante à implémenter')} disabled />
+            </View>
+            <Button title="Marquer comme terminé et retourner" onPress={() => navigation.goBack()} />
+            <View style={styles.quizButtonContainer}>
+              <Button title="Passer au Quiz du Module" onPress={() => navigation.navigate('Quiz', { moduleId: moduleId, moduleTitle: moduleTitle })} />
+            </View>
           </View>
-          <Button title="Marquer comme terminé et retourner" onPress={() => navigation.goBack()} />
-          <View style={styles.quizButtonContainer}>
-            <Button title="Passer au Quiz du Module" onPress={() => navigation.navigate('Quiz', { moduleId: moduleId, moduleTitle: moduleTitle })} />
-          </View>
-        </View>
-      </ScrollView>
+        </ScrollView>
+
+        {/* Barre de défilement personnalisée */}
+        {contentHeight > scrollViewHeight && (
+          <Animated.View
+            style={[
+              styles.customScrollbar,
+              {
+                height: scrollViewHeight * (scrollViewHeight / contentHeight),
+                transform: [{
+                  translateY: scrollY.interpolate({
+                    inputRange: [0, contentHeight - scrollViewHeight],
+                    outputRange: [0, scrollViewHeight - (scrollViewHeight * (scrollViewHeight / contentHeight))],
+                    extrapolate: 'clamp'
+                  })
+                }]
+              }
+            ]}
+          />
+        )}
+      </View>
       
+      {/* Boutons de défilement rapide */}
       <View style={styles.scrollButtons}>
         <TouchableOpacity 
           style={styles.scrollButton} 
           onPress={scrollToTop}
         >
-          <Icon name="arrow-upward" size={24} color="#fff" />
+          <Icon name="keyboard-arrow-up" size={24} color="#ffffff" />
         </TouchableOpacity>
         
         <TouchableOpacity 
           style={styles.scrollButton} 
           onPress={scrollToBottom}
         >
-          <Icon name="arrow-downward" size={24} color="#fff" />
+          <Icon name="keyboard-arrow-down" size={24} color="#ffffff" />
         </TouchableOpacity>
       </View>
     </View>
   );
 };
 
+// Styles du composant
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -192,7 +242,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   scrollButton: {
-    backgroundColor: '#2196F3',
+    backgroundColor: '#EA3680',
     width: 40,
     height: 40,
     borderRadius: 20,
@@ -216,9 +266,10 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     paddingHorizontal: 16,
     paddingBottom: 80, // Space for scroll buttons
+    paddingRight: 20, // Add space for custom scrollbar
   },
   textWrapper: {
-    marginVertical: 16,
+    marginVertical: 8,
   },
   mainContainer: {
     flex: 1,
@@ -249,6 +300,18 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#2196F3',
     fontWeight: 'bold',
+  },
+  scrollContainer: {
+    flex: 1,
+    flexDirection: 'row',
+  },
+  customScrollbar: {
+    width: 6,
+    backgroundColor: '#EA3680',
+    borderRadius: 3,
+    position: 'absolute',
+    right: 2,
+    opacity: 0.7,
   },
 });
 
