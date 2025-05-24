@@ -3,7 +3,8 @@ import { Image, StyleSheet, View, KeyboardAvoidingView, Platform, ScrollView } f
 import { Button, Text, TextInput, Surface, ActivityIndicator, Snackbar } from 'react-native-paper';
 import colors from '../constants/colors';
 import { useAuth } from '../context/AuthContext';
-import authService from '../services/authService';
+import supabase from '../services/supabaseClient'; // Add this import
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const LoginScreen = ({ navigation }) => {
   const { login } = useAuth();
@@ -15,7 +16,11 @@ const LoginScreen = ({ navigation }) => {
   const [snackbarVisible, setSnackbarVisible] = useState(false);
 
   const handleLogin = async () => {
-    if (!email || !password) {
+    // Validate inputs
+    const trimmedEmail = email.trim();
+    const trimmedPassword = password.trim();
+
+    if (!trimmedEmail || !trimmedPassword) {
       setError('Veuillez remplir tous les champs');
       setSnackbarVisible(true);
       return;
@@ -25,11 +30,32 @@ const LoginScreen = ({ navigation }) => {
     setError('');
     
     try {
-      const user = await authService.login(email, password);
-      console.log('Connexion réussie:', user);
-      login(); // Use the login function from context
+      // Ensure email and password are sent as string values
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: String(trimmedEmail),
+        password: String(trimmedPassword)
+      });
+
+      if (error) {
+        throw error;
+      }
+
+      if (data?.user) {
+        console.log('Connexion réussie:', data.user);
+        // Store the session
+        const session = data.session;
+        await AsyncStorage.setItem('supabase.session', JSON.stringify(session));
+        
+        await login(data.user);
+        navigation.replace('Main');
+      }
     } catch (error) {
-      setError(error.message);
+      console.error('Login error:', error.message);
+      setError(
+        error.message.includes('Invalid login credentials')
+          ? 'Email ou mot de passe incorrect'
+          : 'Erreur lors de la connexion'
+      );
       setSnackbarVisible(true);
     } finally {
       setLoading(false);

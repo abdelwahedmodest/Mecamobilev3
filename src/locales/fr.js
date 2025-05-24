@@ -1,4 +1,4 @@
-{
+export default {
   "common": {
     "welcome": "Bienvenue",
     "login": "Se connecter",
@@ -138,4 +138,4 @@
     "next": "Suivant",
     "start": "Commencer"
   }
-}
+};

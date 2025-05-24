@@ -1,6 +1,7 @@
 import { CommonActions } from '@react-navigation/native';
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import supabaseService from '../services/supabaseService';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const AuthContext = createContext(null);
 
@@ -21,7 +22,7 @@ export const AuthProvider = ({ children }) => {
           setIsAuthenticated(true);
         }
       } catch (error) {
-        console.error('Erreur de vérification d'authentification:', error);
+        console.error("Erreur de vérification d'authentification:", error);
       } finally {
         setLoading(false);
       }
@@ -30,15 +31,14 @@ export const AuthProvider = ({ children }) => {
     checkAuth();
   }, []);
 
-  const login = async (email, password) => {
+  const login = async (userData) => {
     try {
-      const { user: authUser, profile: userProfile } = await supabaseService.signIn(email, password);
-      setUser(authUser);
-      setProfile(userProfile);
-      setIsAuthenticated(true);
-      return { user: authUser, profile: userProfile };
+      // Store user data
+      await AsyncStorage.setItem('user', JSON.stringify(userData));
+      setUser(userData);
+      return true;
     } catch (error) {
-      console.error('Erreur de connexion:', error);
+      console.error('AuthContext login error:', error);
       throw error;
     }
   };

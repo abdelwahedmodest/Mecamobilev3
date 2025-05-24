@@ -6,6 +6,7 @@ import theme from './src/constants/theme';
 import { AuthProvider } from './src/context/AuthContext';
 import AppNavigator from './src/navigation/AppNavigator';
 import { checkFirstLaunch } from './src/utils/storage';
+import { LocalizationProvider } from './src/context/LocalizationContext';
 
 export default function App() {
   const [isFirstLaunch, setIsFirstLaunch] = useState(null);
@@ -23,12 +24,14 @@ export default function App() {
   return (
     <StrictMode>
       <AuthProvider>
-        <PaperProvider theme={theme}>
-          <NavigationContainer>
-            <StatusBar style="auto" />
-            <AppNavigator isFirstLaunch={isFirstLaunch} />
-          </NavigationContainer>
-        </PaperProvider>
+        <LocalizationProvider>
+          <PaperProvider theme={theme}>
+            <NavigationContainer>
+              <StatusBar style="auto" />
+              <AppNavigator isFirstLaunch={isFirstLaunch} />
+            </NavigationContainer>
+          </PaperProvider>
+        </LocalizationProvider>
       </AuthProvider>
     </StrictMode>
   );

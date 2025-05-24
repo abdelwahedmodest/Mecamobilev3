@@ -15,6 +15,7 @@ import ContentScreen from '../screens/ContentScreen';
 import ImageScreen from '../screens/ImageScreen';
 import VideoScreen from '../screens/VideoScreen';
 import OnboardingScreen from '../screens/OnboardingScreen';
+import LanguageSelector from '../screens/LanguageSelector';
 
 const Stack = createStackNavigator();
 
@@ -103,6 +104,14 @@ const MainStack = () => (
     <Stack.Screen name="ContentScreen" component={ContentScreen} />
     <Stack.Screen name="ImageScreen" component={ImageScreen} />
     <Stack.Screen name="VideoScreen" component={VideoScreen} />
+    <Stack.Screen 
+      name="LanguageSelector" 
+      component={LanguageSelector}
+      options={{
+        title: 'Sélection de la langue',
+        headerShown: true
+      }}
+    />
   </Stack.Navigator>
 );
 
