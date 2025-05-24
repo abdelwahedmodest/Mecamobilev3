@@ -1,42 +1,90 @@
-import React from 'react';
-import { View, Text, StyleSheet, FlatList } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, FlatList, ActivityIndicator } from 'react-native';
 import { Searchbar } from 'react-native-paper';
-import { COURSES_DATA } from '../data/courseData'; 
+import supabaseService from '../services/supabaseService'; // Import Supabase service
 import CourseCard from '../components/CourseCard';
 import colors from '../constants/colors';
 
-const CourseListScreen = ({ navigation }) => {                // Composant fonctionnel avec props navigation
-  // États
-  const [searchQuery, setSearchQuery] = React.useState('');   // État pour le texte de recherche
-  const [filteredCourses, setFilteredCourses] = 
-    React.useState(COURSES_DATA);                             // État pour la liste filtrée des cours
+const CourseListScreen = ({ navigation }) => {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [allCourses, setAllCourses] = useState([]); // Store all fetched courses
+  const [filteredCourses, setFilteredCourses] = useState([]); // Store courses to display
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // Gestionnaire de recherche
-  const onChangeSearch = (query) => {                         // Fonction appelée à chaque modification de la recherche
-    setSearchQuery(query);                                    // Met à jour le texte de recherche
-    
-    if (query.trim() === '') {                               // Si la recherche est vide
-      setFilteredCourses(COURSES_DATA);                      // Affiche tous les cours
-    } else {                                                 // Sinon
-      const filtered = COURSES_DATA.filter(course =>         // Filtre les cours
-        course.title.toLowerCase().includes(query.toLowerCase()) ||    // Recherche dans le titre
-        course.description.toLowerCase().includes(query.toLowerCase()) // Et dans la description
+  // Fetch courses from Supabase on component mount
+  useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const courses = await supabaseService.getAllCourses();
+        // TODO: Adapt image handling if necessary. Assuming 'image_url' field exists in Supabase table.
+        // If images are stored differently (e.g., require mapping), adjust here.
+        const adaptedCourses = courses.map(course => ({
+          ...course,
+          id: course.course_id, // Map Supabase ID
+          image: { uri: course.image_url } // Assuming image_url field
+        }));
+        setAllCourses(adaptedCourses);
+        setFilteredCourses(adaptedCourses);
+      } catch (err) {
+        console.error('Error fetching courses:', err);
+        setError('Impossible de charger les cours. Veuillez réessayer.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCourses();
+  }, []);
+
+  // Handle search query changes
+  const onChangeSearch = (query) => {
+    setSearchQuery(query);
+    if (query.trim() === '') {
+      setFilteredCourses(allCourses);
+    } else {
+      const filtered = allCourses.filter(course =>
+        course.title.toLowerCase().includes(query.toLowerCase()) ||
+        (course.description && course.description.toLowerCase().includes(query.toLowerCase()))
       );
-      setFilteredCourses(filtered);                          // Met à jour la liste filtrée
+      setFilteredCourses(filtered);
     }
   };
 
-  // Rendu d'un élément de cours
-  const renderCourseItem = ({ item }) => (                   // Fonction de rendu pour chaque cours
-    <CourseCard                                             // Utilise le composant CourseCard
-      course={item}                                         // Passe les données du cours
-      onPress={() => navigation.navigate('CourseDetail', {  // Navigation vers les détails
-        courseId: item.id,                                  // Passe l'ID du cours
-        courseTitle: item.title                             // Passe le titre du cours
+  // Render course item
+  const renderCourseItem = ({ item }) => (
+    <CourseCard
+      course={item}
+      onPress={() => navigation.navigate('CourseDetail', {
+        courseId: item.id, // Use mapped ID
+        courseTitle: item.title
       })}
     />
   );
 
+  // Render loading state
+  if (loading) {
+    return (
+      <View style={styles.centeredContainer}>
+        <ActivityIndicator size="large" color={colors.primary} />
+        <Text style={styles.loadingText}>Chargement des cours...</Text>
+      </View>
+    );
+  }
+
+  // Render error state
+  if (error) {
+    return (
+      <View style={styles.centeredContainer}>
+        <Text style={styles.errorText}>{error}</Text>
+        {/* Optionally add a retry button here */}
+      </View>
+    );
+  }
+
+  // Render main content
   return (
     <View style={styles.container}>
       <Searchbar
@@ -50,13 +98,13 @@ const CourseListScreen = ({ navigation }) => {                // Composant fonct
         <FlatList
           data={filteredCourses}
           renderItem={renderCourseItem}
-          keyExtractor={item => item.id}
+          keyExtractor={item => item.id.toString()} // Ensure key is a string
           contentContainerStyle={styles.listContainer}
         />
       ) : (
         <View style={styles.noResultsContainer}>
           <Text style={styles.noResultsText}>
-            Aucun cours ne correspond à votre recherche
+            {searchQuery ? 'Aucun cours ne correspond à votre recherche' : 'Aucun cours disponible pour le moment'}
           </Text>
         </View>
       )}
@@ -69,6 +117,23 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
     backgroundColor: colors.background,
+  },
+  centeredContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+    backgroundColor: colors.background,
+  },
+  loadingText: {
+    marginTop: 10,
+    fontSize: 16,
+    color: colors.text,
+  },
+  errorText: {
+    fontSize: 16,
+    color: colors.error, // Make sure colors.error is defined
+    textAlign: 'center',
   },
   searchBar: {
     marginBottom: 16,
@@ -91,3 +156,4 @@ const styles = StyleSheet.create({
 });
 
 export default CourseListScreen;
+

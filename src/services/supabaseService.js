@@ -1,19 +1,17 @@
 import supabase from './supabaseClient';
 
 class SupabaseService {
+  // ... (existing methods for auth, users, courses, modules, enrollments, badges, progress) ...
+
   // Authentification
   async signUp(email, password, userData) {
     try {
-      // Inscription avec Supabase Auth
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email,
         password,
       });
-
       if (authError) throw authError;
-
-      // Création du profil utilisateur dans la table Users
-      const { data: userData, error: userError } = await supabase
+      const { data: userProfile, error: userError } = await supabase
         .from('Users')
         .insert([
           {
@@ -25,11 +23,10 @@ class SupabaseService {
             avatar_url: userData.avatar_url || null,
           },
         ])
-        .select();
-
+        .select()
+        .single();
       if (userError) throw userError;
-
-      return { user: authData.user, profile: userData[0] };
+      return { user: authData.user, profile: userProfile };
     } catch (error) {
       console.error('Erreur d\'inscription:', error.message);
       throw error;
@@ -42,18 +39,13 @@ class SupabaseService {
         email,
         password,
       });
-
       if (error) throw error;
-
-      // Récupérer les informations du profil utilisateur
       const { data: profile, error: profileError } = await supabase
         .from('Users')
         .select('*')
         .eq('user_id', data.user.id)
         .single();
-
-      if (profileError) throw profileError;
-
+      if (profileError && profileError.code !== 'PGRST116') throw profileError;
       return { user: data.user, profile };
     } catch (error) {
       console.error('Erreur de connexion:', error.message);
@@ -86,19 +78,14 @@ class SupabaseService {
   async getCurrentUser() {
     try {
       const { data: { user }, error } = await supabase.auth.getUser();
-      
       if (error) throw error;
       if (!user) return null;
-
-      // Récupérer les informations du profil utilisateur
       const { data: profile, error: profileError } = await supabase
         .from('Users')
         .select('*')
         .eq('user_id', user.id)
         .single();
-
       if (profileError && profileError.code !== 'PGRST116') throw profileError;
-
       return { user, profile };
     } catch (error) {
       console.error('Erreur de récupération de l\'utilisateur:', error.message);
@@ -107,16 +94,16 @@ class SupabaseService {
   }
 
   // Gestion des utilisateurs
-  async updateUserProfile(userId, userData) {
+  async updateUserProfile(userId, profileData) {
     try {
       const { data, error } = await supabase
         .from('Users')
-        .update(userData)
+        .update(profileData)
         .eq('user_id', userId)
-        .select();
-
+        .select()
+        .single();
       if (error) throw error;
-      return data[0];
+      return data;
     } catch (error) {
       console.error('Erreur de mise à jour du profil:', error.message);
       throw error;
@@ -130,8 +117,7 @@ class SupabaseService {
         .select('*')
         .eq('user_id', userId)
         .single();
-
-      if (error) throw error;
+      if (error && error.code !== 'PGRST116') throw error;
       return data;
     } catch (error) {
       console.error('Erreur de récupération de l\'utilisateur:', error.message);
@@ -145,7 +131,6 @@ class SupabaseService {
       const { data, error } = await supabase
         .from('Courses')
         .select('*');
-
       if (error) throw error;
       return data;
     } catch (error) {
@@ -161,8 +146,7 @@ class SupabaseService {
         .select('*, Modules(*)')
         .eq('course_id', courseId)
         .single();
-
-      if (error) throw error;
+      if (error && error.code !== 'PGRST116') throw error;
       return data;
     } catch (error) {
       console.error('Erreur de récupération du cours:', error.message);
@@ -177,7 +161,6 @@ class SupabaseService {
         .from('Modules')
         .select('*')
         .eq('course_id', courseId);
-
       if (error) throw error;
       return data;
     } catch (error) {
@@ -185,6 +168,72 @@ class SupabaseService {
       throw error;
     }
   }
+
+  async getModuleById(moduleId) {
+    try {
+      const { data, error } = await supabase
+        .from('Modules')
+        .select('*')
+        .eq('module_id', moduleId)
+        .single();
+      if (error && error.code !== 'PGRST116') throw error;
+      return data;
+    } catch (error) {
+      console.error('Erreur de récupération du module:', error.message);
+      throw error;
+    }
+  }
+
+  // ***** NOUVELLE FONCTION POUR LES QUIZ *****
+  async getQuizByModuleId(moduleId) {
+    try {
+      // Assuming a 'Quizzes' table linked to 'Modules' by 'module_id'
+      // And each quiz item has 'question', 'options' (array), 'correct_answer'
+      const { data, error } = await supabase
+        .from('Quizzes') // Adjust table name if different
+        .select('*')
+        .eq('module_id', moduleId);
+
+      if (error) throw error;
+      // Ensure options is an array, Supabase might return JSON string
+      return data.map(q => ({
+        ...q,
+        options: typeof q.options === 'string' ? JSON.parse(q.options) : q.options || []
+      }));
+    } catch (error) {
+      console.error('Erreur de récupération du quiz:', error.message);
+      throw error;
+    }
+  }
+  // ***** FIN NOUVELLE FONCTION POUR LES QUIZ *****
+
+  // ***** NOUVELLE FONCTION POUR SAUVEGARDER LES RESULTATS DU QUIZ *****
+  async saveQuizResult(userId, moduleId, score, totalQuestions) {
+    try {
+      // Assuming a 'UserQuizResults' table
+      const { data, error } = await supabase
+        .from('UserQuizResults') // Adjust table name if different
+        .insert([
+          {
+            user_id: userId,
+            module_id: moduleId,
+            score: score,
+            total_questions: totalQuestions,
+            attempted_at: new Date().toISOString(),
+          },
+        ])
+        .select()
+        .single();
+
+      if (error) throw error;
+      return data;
+    } catch (error) {
+      console.error('Erreur de sauvegarde du résultat du quiz:', error.message);
+      throw error;
+    }
+  }
+  // ***** FIN NOUVELLE FONCTION POUR SAUVEGARDER LES RESULTATS DU QUIZ *****
+
 
   // Gestion des inscriptions aux cours
   async enrollUserInCourse(userId, courseId) {
@@ -197,10 +246,10 @@ class SupabaseService {
             course_id: courseId,
           },
         ])
-        .select();
-
+        .select()
+        .single();
       if (error) throw error;
-      return data[0];
+      return data;
     } catch (error) {
       console.error('Erreur d\'inscription au cours:', error.message);
       throw error;
@@ -213,7 +262,6 @@ class SupabaseService {
         .from('UserCourseEnrollment')
         .select('*, Courses(*)')
         .eq('user_id', userId);
-
       if (error) throw error;
       return data;
     } catch (error) {
@@ -231,10 +279,10 @@ class SupabaseService {
           completion_status: status,
         })
         .eq('enrollment_id', enrollmentId)
-        .select();
-
+        .select()
+        .single();
       if (error) throw error;
-      return data[0];
+      return data;
     } catch (error) {
       console.error('Erreur de mise à jour de la progression:', error.message);
       throw error;
@@ -247,7 +295,6 @@ class SupabaseService {
       const { data, error } = await supabase
         .from('Badges')
         .select('*');
-
       if (error) throw error;
       return data;
     } catch (error) {
@@ -262,7 +309,6 @@ class SupabaseService {
         .from('UserBadges')
         .select('*, Badges(*)')
         .eq('user_id', userId);
-
       if (error) throw error;
       return data;
     } catch (error) {
@@ -281,10 +327,10 @@ class SupabaseService {
             badge_id: badgeId,
           },
         ])
-        .select();
-
+        .select()
+        .single();
       if (error) throw error;
-      return data[0];
+      return data;
     } catch (error) {
       console.error('Erreur d\'attribution de badge:', error.message);
       throw error;
@@ -294,49 +340,38 @@ class SupabaseService {
   // Gestion de la progression des modules
   async updateModuleProgress(userId, moduleId, completed) {
     try {
-      // Vérifier si une entrée existe déjà
-      const { data: existingData, error: existingError } = await supabase
+      const { data: existingData, error: selectError } = await supabase
         .from('UserModuleProgress')
-        .select('*')
+        .select('progress_id')
         .eq('user_id', userId)
         .eq('module_id', moduleId)
         .maybeSingle();
-
-      if (existingError) throw existingError;
-
+      if (selectError) throw selectError;
       let result;
-      
+      const progressData = {
+        user_id: userId,
+        module_id: moduleId,
+        completed: completed,
+        completion_date: completed ? new Date().toISOString() : null,
+      };
       if (existingData) {
-        // Mettre à jour l'entrée existante
-        const { data, error } = await supabase
+        const { data, error: updateError } = await supabase
           .from('UserModuleProgress')
-          .update({
-            completed: completed,
-            completion_date: completed ? new Date() : null,
-          })
+          .update(progressData)
           .eq('progress_id', existingData.progress_id)
-          .select();
-
-        if (error) throw error;
-        result = data[0];
+          .select()
+          .single();
+        if (updateError) throw updateError;
+        result = data;
       } else {
-        // Créer une nouvelle entrée
-        const { data, error } = await supabase
+        const { data, error: insertError } = await supabase
           .from('UserModuleProgress')
-          .insert([
-            {
-              user_id: userId,
-              module_id: moduleId,
-              completed: completed,
-              completion_date: completed ? new Date() : null,
-            },
-          ])
-          .select();
-
-        if (error) throw error;
-        result = data[0];
+          .insert([progressData])
+          .select()
+          .single();
+        if (insertError) throw insertError;
+        result = data;
       }
-
       return result;
     } catch (error) {
       console.error('Erreur de mise à jour de la progression du module:', error.message);
@@ -352,8 +387,7 @@ class SupabaseService {
         .eq('user_id', userId)
         .eq('module_id', moduleId)
         .maybeSingle();
-
-      if (error) throw error;
+      if (error && error.code !== 'PGRST116') throw error;
       return data;
     } catch (error) {
       console.error('Erreur de récupération de la progression du module:', error.message);
@@ -363,30 +397,27 @@ class SupabaseService {
 
   async getUserProgressForCourse(userId, courseId) {
     try {
-      // Récupérer tous les modules du cours
       const { data: modules, error: modulesError } = await supabase
         .from('Modules')
         .select('module_id')
         .eq('course_id', courseId);
-
       if (modulesError) throw modulesError;
-
-      // Récupérer la progression de l'utilisateur pour ces modules
+      if (!modules || modules.length === 0) {
+        return { totalModules: 0, completedModules: 0, progress: 0, details: [] };
+      }
       const moduleIds = modules.map(module => module.module_id);
-      
       const { data: progress, error: progressError } = await supabase
         .from('UserModuleProgress')
         .select('*')
         .eq('user_id', userId)
         .in('module_id', moduleIds);
-
       if (progressError) throw progressError;
-
+      const completedCount = progress ? progress.filter(p => p.completed).length : 0;
       return {
         totalModules: modules.length,
-        completedModules: progress.filter(p => p.completed).length,
-        progress: modules.length > 0 ? (progress.filter(p => p.completed).length / modules.length) * 100 : 0,
-        details: progress
+        completedModules: completedCount,
+        progress: modules.length > 0 ? (completedCount / modules.length) * 100 : 0,
+        details: progress || []
       };
     } catch (error) {
       console.error('Erreur de récupération de la progression du cours:', error.message);
@@ -396,3 +427,4 @@ class SupabaseService {
 }
 
 export default new SupabaseService();
+
