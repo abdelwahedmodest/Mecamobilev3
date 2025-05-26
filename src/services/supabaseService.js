@@ -12,7 +12,7 @@ class SupabaseService {
       });
       if (authError) throw authError;
       const { data: userProfile, error: userError } = await supabase
-        .from('Users')
+        .from('users')  // Changed from Users
         .insert([
           {
             user_id: authData.user.id,
@@ -113,7 +113,7 @@ class SupabaseService {
   async getUserById(userId) {
     try {
       const { data, error } = await supabase
-        .from('Users')
+        .from('users')  // Changed from Users
         .select('*')
         .eq('user_id', userId)
         .single();
@@ -129,7 +129,7 @@ class SupabaseService {
   async getAllCourses() {
     try {
       const { data, error } = await supabase
-        .from('Courses')
+        .from('courses')  // lowercase table name
         .select('*');
       if (error) throw error;
       return data;
@@ -142,14 +142,18 @@ class SupabaseService {
   async getCourseById(courseId) {
     try {
       const { data, error } = await supabase
-        .from('Courses')
-        .select('*, Modules(*)')
+        .from('courses')  // lowercase table name
+        .select(`
+          *,
+          modules(*)
+        `)
         .eq('course_id', courseId)
         .single();
-      if (error && error.code !== 'PGRST116') throw error;
+
+      if (error) throw error;
       return data;
     } catch (error) {
-      console.error('Erreur de récupération du cours:', error.message);
+      console.error('Erreur de récupération du cours:', error);
       throw error;
     }
   }
@@ -158,7 +162,7 @@ class SupabaseService {
   async getModulesByCourseId(courseId) {
     try {
       const { data, error } = await supabase
-        .from('Modules')
+        .from('modules')
         .select('*')
         .eq('course_id', courseId);
       if (error) throw error;
@@ -172,7 +176,7 @@ class SupabaseService {
   async getModuleById(moduleId) {
     try {
       const { data, error } = await supabase
-        .from('Modules')
+        .from('modules')  // Changed from Modules
         .select('*')
         .eq('module_id', moduleId)
         .single();
@@ -190,7 +194,7 @@ class SupabaseService {
       // Assuming a 'Quizzes' table linked to 'Modules' by 'module_id'
       // And each quiz item has 'question', 'options' (array), 'correct_answer'
       const { data, error } = await supabase
-        .from('Quizzes') // Adjust table name if different
+        .from('quizzes')  // Changed from Quizzes
         .select('*')
         .eq('module_id', moduleId);
 
@@ -212,7 +216,7 @@ class SupabaseService {
     try {
       // Assuming a 'UserQuizResults' table
       const { data, error } = await supabase
-        .from('UserQuizResults') // Adjust table name if different
+        .from('user_quiz_results')  // Changed from UserQuizResults
         .insert([
           {
             user_id: userId,
@@ -239,7 +243,7 @@ class SupabaseService {
   async enrollUserInCourse(userId, courseId) {
     try {
       const { data, error } = await supabase
-        .from('UserCourseEnrollment')
+        .from('user_course_enrollment')  // Changed from UserCourseEnrollment
         .insert([
           {
             user_id: userId,
@@ -259,8 +263,8 @@ class SupabaseService {
   async getUserEnrollments(userId) {
     try {
       const { data, error } = await supabase
-        .from('UserCourseEnrollment')
-        .select('*, Courses(*)')
+        .from('user_course_enrollment')  // Changed from UserCourseEnrollment
+        .select('*, courses(*)')  // Changed from Courses
         .eq('user_id', userId);
       if (error) throw error;
       return data;
@@ -293,7 +297,7 @@ class SupabaseService {
   async getAllBadges() {
     try {
       const { data, error } = await supabase
-        .from('Badges')
+        .from('badges')  // Changed from Badges
         .select('*');
       if (error) throw error;
       return data;
@@ -306,8 +310,8 @@ class SupabaseService {
   async getUserBadges(userId) {
     try {
       const { data, error } = await supabase
-        .from('UserBadges')
-        .select('*, Badges(*)')
+        .from('user_badges')  // Changed from UserBadges
+        .select('*, badges(*)')  // Changed from Badges
         .eq('user_id', userId);
       if (error) throw error;
       return data;
@@ -341,7 +345,7 @@ class SupabaseService {
   async updateModuleProgress(userId, moduleId, completed) {
     try {
       const { data: existingData, error: selectError } = await supabase
-        .from('UserModuleProgress')
+        .from('user_module_progress')  // Changed from UserModuleProgress
         .select('progress_id')
         .eq('user_id', userId)
         .eq('module_id', moduleId)
@@ -398,7 +402,7 @@ class SupabaseService {
   async getUserProgressForCourse(userId, courseId) {
     try {
       const { data: modules, error: modulesError } = await supabase
-        .from('Modules')
+        .from('modules')  // Changed from Modules
         .select('module_id')
         .eq('course_id', courseId);
       if (modulesError) throw modulesError;

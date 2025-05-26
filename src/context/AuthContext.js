@@ -3,7 +3,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import supabaseService from '../services/supabaseService';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const AuthContext = createContext(null);
+export const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -98,25 +98,31 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const value = {
+    isAuthenticated, 
+    user, 
+    profile, 
+    loading,
+    login, 
+    logout, 
+    register,
+    resetPassword,
+    updateProfile
+  };
+
   return (
-    <AuthContext.Provider 
-      value={{ 
-        isAuthenticated, 
-        user, 
-        profile, 
-        loading,
-        login, 
-        logout, 
-        register,
-        resetPassword,
-        updateProfile
-      }}
-    >
+    <AuthContext.Provider value={value}>
       {children}
     </AuthContext.Provider>
   );
 };
 
-export const useAuth = () => useContext(AuthContext);
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
+};
 
 export default AuthContext;

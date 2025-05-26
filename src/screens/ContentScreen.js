@@ -1,13 +1,13 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, ScrollView, ActivityIndicator, Alert } from 'react-native';
 import { Text, Card, Title, Button, ProgressBar } from 'react-native-paper';
-import supabaseService from '../services/supabaseService'; // Import Supabase service
+import supabaseService from '../services/supabaseService';
 import colors from '../constants/colors';
-import { AuthContext } from '../context/AuthContext'; // Import AuthContext for user ID
+import { useAuth } from '../context/AuthContext'; // Update this import
 
 const ContentScreen = ({ route, navigation }) => {
-  const { moduleId, moduleTitle, courseId } = route.params; // Added courseId
-  const { user } = useContext(AuthContext);
+  const { moduleId, moduleTitle, courseId } = route.params;
+  const { user } = useAuth(); // Use the hook instead of useContext
   const [moduleData, setModuleData] = useState(null);
   const [sections, setSections] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);

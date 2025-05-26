@@ -1,13 +1,13 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, ScrollView, ActivityIndicator, Alert } from 'react-native';
 import { Text, Button, Card, RadioButton, Title } from 'react-native-paper';
-import supabaseService from '../services/supabaseService'; // Import Supabase service
-import { useAuth } from '../context/AuthContext'; // Import useAuth to get user ID
+import supabaseService from '../services/supabaseService';
+import { useAuth } from '../context/AuthContext'; // Import useAuth hook
 import colors from '../constants/colors';
 
 const QuizScreen = ({ route, navigation }) => {
   const { moduleId, moduleTitle } = route.params;
-  const { user } = useContext(useAuth); // Get user from context
+  const { user } = useAuth(); // Use the hook directly instead of useContext
   const [questions, setQuestions] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState('');

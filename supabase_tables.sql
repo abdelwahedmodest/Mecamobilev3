@@ -60,3 +60,24 @@ CREATE TABLE UserModuleProgress (
     completed BOOLEAN DEFAULT FALSE,
     completion_date TIMESTAMP
 );
+
+-- Table Quizzes
+CREATE TABLE quizzes (
+    quiz_id SERIAL PRIMARY KEY,
+    module_id VARCHAR(20) REFERENCES modules(module_id),
+    question_text TEXT NOT NULL,
+    options TEXT[] NOT NULL,
+    correct_answer TEXT NOT NULL,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Table QuizResults
+CREATE TABLE quiz_results (
+    result_id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES users(user_id),
+    module_id VARCHAR(20) REFERENCES modules(module_id),
+    score INTEGER NOT NULL,
+    total_questions INTEGER NOT NULL,
+    attempted_at TIMESTAMPTZ DEFAULT NOW()
+);

@@ -1,12 +1,13 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, Button, Image, ActivityIndicator, Alert } from 'react-native';
-import supabaseService from '../services/supabaseService'; // Import Supabase service
+import supabaseService from '../services/supabaseService';
 import colors from '../constants/colors';
-import { AuthContext } from '../context/AuthContext'; // Import AuthContext to get user ID
+import { useAuth } from '../context/AuthContext'; // Change this import
+import { Card, Title as PaperTitle } from 'react-native-paper'; // Add this import at the top
 
 const CourseDetailScreen = ({ route, navigation }) => {
   const { courseId } = route.params;
-  const { user } = useContext(AuthContext); // Get user from context
+  const { user } = useAuth(); // Use the hook instead of useContext directly
   const [course, setCourse] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -28,11 +29,11 @@ const CourseDetailScreen = ({ route, navigation }) => {
           ...courseData,
           id: courseData.course_id,
           image: courseData.image_url ? { uri: courseData.image_url } : null, // Handle potential null image_url
-          modules: courseData.Modules.map(mod => ({ // Map Modules array
+          modules: courseData.modules?.map(mod => ({  // Changed from Modules to modules
             ...mod,
             id: mod.module_id, // Map module ID
             duration: mod.duration || 'N/A' // Provide default if duration is null
-          }))
+          })) || []
         };
         setCourse(adaptedCourse);
       } catch (err) {
@@ -104,32 +105,35 @@ const CourseDetailScreen = ({ route, navigation }) => {
       <Text style={styles.modulesHeader}>Modules du Cours :</Text>
       {course.modules && course.modules.length > 0 ? (
         course.modules.map(module => (
-          <View key={module.id} style={styles.moduleItem}>
-            <Text style={styles.moduleTitle}>{module.title}</Text>
-            <Text style={styles.moduleDuration}>Durée : {module.duration}</Text>
-            <Button 
-              title="Voir le module"
-              onPress={() => navigation.navigate('ModuleType', { 
-                moduleId: module.id, // Use mapped module ID
-                moduleTitle: module.title, 
-                courseId: course.id // Use mapped course ID
-              })}
-              color={colors.primary} // Use theme color
-            />
-          </View>
+          <Card 
+            key={module.id} 
+            style={styles.moduleCard}
+            onPress={() => navigation.navigate('ModuleType', { 
+              moduleId: module.id,
+              moduleTitle: module.title, 
+              courseId: course.id
+            })}
+          >
+            <Card.Content>
+              <PaperTitle style={styles.moduleTitle}>{module.title}</PaperTitle>
+              <Text style={styles.moduleDuration}>Durée : {module.duration}</Text>
+            </Card.Content>
+          </Card>
         ))
       ) : (
         <Text style={styles.noModulesText}>Aucun module disponible pour ce cours pour le moment.</Text>
       )}
 
-      <View style={styles.enrollButtonContainer}>
-        <Button 
-          title={enrolling ? "Inscription en cours..." : "S'inscrire à ce cours"} 
-          onPress={handleEnroll} 
-          disabled={enrolling} 
-          color={colors.secondary} // Use theme color
-        />
-      </View>
+      <Card 
+        style={[styles.moduleCard, styles.enrollCard]}
+        onPress={handleEnroll}
+      >
+        <Card.Content>
+          <PaperTitle style={styles.enrollText}>
+            {enrolling ? "Inscription en cours..." : "S'inscrire à ce cours"}
+          </PaperTitle>
+        </Card.Content>
+      </Card>
     </ScrollView>
   );
 };
@@ -217,6 +221,23 @@ const styles = StyleSheet.create({
   enrollButtonContainer: {
     marginTop: 20,
     marginBottom: 40, // Add more space at the bottom
+  },
+  moduleCard: {
+    marginBottom: 10,
+    backgroundColor: colors.cardBackground,
+    elevation: 2,
+    borderRadius: 8,
+  },
+  enrollCard: {
+    marginTop: 20,
+    marginBottom: 40,
+    backgroundColor: colors.secondary,
+  },
+  enrollText: {
+    color: 'white',
+    textAlign: 'center',
+    fontSize: 18,
+    fontWeight: 'bold',
   },
 });
 
