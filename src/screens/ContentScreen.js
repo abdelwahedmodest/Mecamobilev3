@@ -3,11 +3,11 @@ import { View, StyleSheet, ScrollView, ActivityIndicator, Alert } from 'react-na
 import { Text, Card, Title, Button, ProgressBar } from 'react-native-paper';
 import supabaseService from '../services/supabaseService';
 import colors from '../constants/colors';
-import { useAuth } from '../context/AuthContext'; // Update this import
+import { useAuth } from '../context/AuthContext';
 
 const ContentScreen = ({ route, navigation }) => {
   const { moduleId, moduleTitle, courseId } = route.params;
-  const { user } = useAuth(); // Use the hook instead of useContext
+  const { user } = useAuth();
   const [moduleData, setModuleData] = useState(null);
   const [sections, setSections] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -25,8 +25,6 @@ const ContentScreen = ({ route, navigation }) => {
           throw new Error('Contenu du module non trouvé.');
         }
         setModuleData(data);
-        // Assuming content is in a field named 'content' or 'text_content'
-        // Adjust 'data.content' if the field name is different in your Supabase table
         const contentText = data.content || data.text_content || ''; 
         const splitSections = contentText.split('\n\n').filter(section => section.trim());
         setSections(splitSections.length > 0 ? splitSections : ['Aucun contenu textuel disponible pour ce module.']);
@@ -41,21 +39,10 @@ const ContentScreen = ({ route, navigation }) => {
     fetchModuleContent();
   }, [moduleId]);
 
-  // Function to update module progress
-  const markModuleComplete = async () => {
-    if (!user || updatingProgress) return;
-    setUpdatingProgress(true);
-    try {
-      await supabaseService.updateModuleProgress(user.id, moduleId, true);
-      Alert.alert("Progression", "Module marqué comme terminé !");
-      // Optionally, update course progress as well
-      // await supabaseService.updateUserCourseProgressBasedOnModules(user.id, courseId);
-    } catch (err) {
-      console.error("Error updating module progress:", err);
-      Alert.alert("Erreur", "Impossible de mettre à jour la progression.");
-    } finally {
-      setUpdatingProgress(false);
-    }
+  const handleCompletion = async () => {
+    navigation.navigate('CourseDetail', { 
+      courseId: courseId
+    });
   };
 
   const progress = sections.length > 0 ? (currentIndex + 1) / sections.length : 0;
@@ -64,8 +51,7 @@ const ContentScreen = ({ route, navigation }) => {
     if (currentIndex < sections.length - 1) {
       setCurrentIndex(currentIndex + 1);
     } else if (currentIndex === sections.length - 1) {
-      // Reached the end, mark as complete
-      markModuleComplete();
+      handleCompletion();
     }
   };
 

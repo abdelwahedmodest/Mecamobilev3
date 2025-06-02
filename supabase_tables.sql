@@ -1,5 +1,5 @@
--- Table Users
-CREATE TABLE Users (
+-- Table users
+CREATE TABLE users (
     user_id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL,
@@ -8,8 +8,8 @@ CREATE TABLE Users (
     avatar_url TEXT
 );
 
--- Table Courses
-CREATE TABLE Courses (
+-- Table courses
+CREATE TABLE courses (
     course_id SERIAL PRIMARY KEY,
     title VARCHAR(200) NOT NULL,
     description TEXT,
@@ -18,50 +18,54 @@ CREATE TABLE Courses (
     image_path TEXT
 );
 
--- Table Modules
-CREATE TABLE Modules (
+-- Table modules
+CREATE TABLE modules (
     module_id VARCHAR(20) PRIMARY KEY,
-    course_id INTEGER REFERENCES Courses(course_id),
+    course_id INTEGER REFERENCES courses(course_id),
     title VARCHAR(200) NOT NULL,
-    duration VARCHAR(20)
+    description TEXT,
+    image_path TEXT,
+    duration VARCHAR(20),
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Table Badges
-CREATE TABLE Badges (
+-- Table badges
+CREATE TABLE badges (
     badge_id SERIAL PRIMARY KEY,
     title VARCHAR(100) NOT NULL,
     description TEXT,
     image_path TEXT
 );
 
--- Table UserCourseEnrollment (relation utilisateur-cours)
-CREATE TABLE UserCourseEnrollment (
+-- Table user_course_enrollment
+CREATE TABLE user_course_enrollment (
     enrollment_id SERIAL PRIMARY KEY,
-    user_id INTEGER REFERENCES Users(user_id),
-    course_id INTEGER REFERENCES Courses(course_id),
+    user_id INTEGER REFERENCES users(user_id),
+    course_id INTEGER REFERENCES courses(course_id),
     enrollment_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     completion_status VARCHAR(20) DEFAULT 'En cours',
     progress INTEGER DEFAULT 0
 );
 
--- Table UserBadges (relation utilisateur-badge)
-CREATE TABLE UserBadges (
+-- Table user_badges
+CREATE TABLE user_badges (
     user_badge_id SERIAL PRIMARY KEY,
-    user_id INTEGER REFERENCES Users(user_id),
-    badge_id INTEGER REFERENCES Badges(badge_id),
+    user_id INTEGER REFERENCES users(user_id),
+    badge_id INTEGER REFERENCES badges(badge_id),
     date_obtained TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Table UserModuleProgress (pour suivre la progression des modules)
-CREATE TABLE UserModuleProgress (
+-- Table user_module_progress
+CREATE TABLE user_module_progress (
     progress_id SERIAL PRIMARY KEY,
-    user_id INTEGER REFERENCES Users(user_id),
-    module_id VARCHAR(20) REFERENCES Modules(module_id),
+    user_id INTEGER REFERENCES users(user_id),
+    module_id VARCHAR(20) REFERENCES modules(module_id),
     completed BOOLEAN DEFAULT FALSE,
     completion_date TIMESTAMP
 );
 
--- Table Quizzes
+-- Table quizzes
 CREATE TABLE quizzes (
     quiz_id SERIAL PRIMARY KEY,
     module_id VARCHAR(20) REFERENCES modules(module_id),
@@ -72,7 +76,7 @@ CREATE TABLE quizzes (
     updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Table QuizResults
+-- Table quiz_results
 CREATE TABLE quiz_results (
     result_id SERIAL PRIMARY KEY,
     user_id INTEGER REFERENCES users(user_id),

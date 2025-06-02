@@ -1,16 +1,41 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Image, ScrollView } from 'react-native';
 import { Text, Card, ActivityIndicator } from 'react-native-paper';
-import { LESSON_CONTENT } from '../data/courseData';
+import supabaseService from '../services/supabaseService';
 
 const ImageScreen = ({ route }) => {
   const { moduleId, moduleTitle } = route.params;
   const [loading, setLoading] = useState(true);
+  const [moduleContent, setModuleContent] = useState(null);
+  const [error, setError] = useState(null);
 
-  // Get content from LESSON_CONTENT
-  const lessonContent = LESSON_CONTENT[moduleId];
+  useEffect(() => {
+    const fetchModuleContent = async () => {
+      try {
+        const data = await supabaseService.getModuleById(moduleId);
+        if (data) {
+          setModuleContent(data);
+        }
+      } catch (err) {
+        setError(err.message);
+        console.error('Error fetching module content:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  if (!lessonContent || !lessonContent.imageUrl) {
+    fetchModuleContent();
+  }, [moduleId]);
+
+  if (loading) {
+    return (
+      <View style={styles.container}>
+        <ActivityIndicator size="large" color="#007AFF" />
+      </View>
+    );
+  }
+
+  if (error || !moduleContent) {
     return (
       <View style={styles.container}>
         <Text style={styles.title}>{moduleTitle}</Text>
@@ -37,16 +62,16 @@ const ImageScreen = ({ route }) => {
             />
           )}
           <Image
-            source={{ uri: lessonContent.imageUrl }}
+            source={{ uri: moduleContent.image_path }}
             style={styles.image}
             onLoad={handleImageLoad}
             resizeMode="contain"
           />
         </View>
         <Card.Content>
-          <Text style={styles.imageTitle}>{lessonContent.title}</Text>
+          <Text style={styles.imageTitle}>{moduleContent.title}</Text>
           <Text style={styles.description}>
-            {lessonContent.textContent.split('\n\n')[0]}
+            {moduleContent.description}
           </Text>
         </Card.Content>
       </Card>

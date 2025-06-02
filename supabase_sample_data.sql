@@ -1,89 +1,113 @@
--- Création d'un exemple de données pour tester l'intégration
+-- Voluminous Sample Data for Mecamobilev3 (Corrected with Integer User IDs) --
 
--- Insertion de quelques utilisateurs de test
-INSERT INTO Users (user_id,name, email, phone, speciality, avatar_url)
-VALUES 
-(1,'Admin Mecamobile', 'admin@mecamobile.fr', '+33123456789', 'Administration', 'https://example.com/avatars/admin.png'),
-(2,'Jean Dupont', 'prof@mecamobile.fr', '+33123456790', 'Mécanique automobile', 'https://example.com/avatars/prof.png'),
-(3,'Marie Martin', 'etudiant1@mecamobile.fr', '+33123456791', 'Mécanique générale', 'https://example.com/avatars/etudiant1.png'),
-(4,'Thomas Bernard', 'etudiant2@mecamobile.fr', '+33123456792', 'Électronique embarquée', 'https://example.com/avatars/etudiant2.png'),
-(5,'John Doe', 'john@example.com', '+1234567890', 'Cardiology', 'https://example.com/avatars/etudiant31.png'),
-(6,'Jane Smith', 'jane@example.com', '+0987654321', 'Pediatrics', 'https://example.com/avatars/etudiant25.png');
+-- Inserting Users --
+INSERT INTO users (user_id, name, email, phone, speciality, avatar_url) VALUES
+  (1, 'Sophie Durand', 'sophie.durand1@mecamobile.fr', '+33640633424', 'Électronique embarquée', 'https://example.com/avatars/avatar_1.png'),
+  (2, 'Alain Lefebvre', 'alain.lefebvre2@mecamobile.fr', '+33773610258', 'Systèmes de freinage', 'https://example.com/avatars/avatar_2.png'),
+  (3, 'Pierre Bertrand', 'pierre.bertrand3@mecamobile.fr', '+33745609836', 'Carrosserie', 'https://example.com/avatars/avatar_3.png');
+  
+  
+-- Inserting Courses --
+INSERT INTO courses (course_id, title, description, duration, level, image_path) VALUES
+  (1, 'Climatisation', 
+   'Principes, composants, recharge, détection de fuites.', 
+   '25h', 'Intermédiaire', 
+   'src/assets/courses/climatisation.jpg'),
+   
+  (2, 'Moteurs Thermiques', 
+   'Principes de base, composants et fonctionnement des moteurs essence et diesel.', 
+   '25h', 'Avancé', 
+   'src/assets/courses/moteurs_thermiques.jpg'),
+   
+  (3, 'Véhicules Hybrides et Électriques', 
+   'Technologies, batteries, moteurs électriques, maintenance spécifique.', 
+   '15h', 'Avancé', 
+   'src/assets/courses/vehicules_hybrides.jpg'),
+   
+  (4, 'Moteurs Thermiques', 
+   'Principes de base, composants et fonctionnement des moteurs essence et diesel.', 
+   '20h', 'Avancé', 
+   'src/assets/courses/moteurs_thermiques_2.jpg'),
+   
+  (5, 'Électronique Embarquée', 
+   'Capteurs, actuateurs, calculateurs (ECU), bus CAN.', 
+   '10h', 'Débutant', 
+   'src/assets/courses/electronique_embarquee.jpg'),
+   
+  (6, 'Carrosserie et Peinture', 
+   'Réparation des tôles, préparation des surfaces, techniques de peinture.', 
+   '20h', 'Avancé', 
+   'src/assets/courses/carrosserie_peinture.jpg'),
+   
+  (7, 'Climatisation', 
+   'Principes, composants, recharge, détection de fuites.', 
+   '10h', 'Débutant', 
+   'src/assets/courses/climatisation_2.jpg'),
+   
+  (8, 'Électronique Embarquée', 
+   'Capteurs, actuateurs, calculateurs (ECU), bus CAN.', 
+   '20h', 'Avancé', 
+   'src/assets/courses/electronique_embarquee_2.jpg'),
+   
+  (9, 'Sécurité Passive et Active', 
+   'Airbags, prétensionneurs, systèmes d"aide à la conduite (ADAS).', 
+   '5h', 'Intermédiaire', 
+   'src/assets/courses/securite_passive_active.jpg'),
+   
+  (10, 'Climatisation', 
+   'Principes, composants, recharge, détection de fuites.', 
+   '25h', 'Intermédiaire', 
+   'src/assets/courses/climatisation_3.jpg'),
+   
+  (11, 'Carrosserie et Peinture', 
+   'Réparation des tôles, préparation des surfaces, techniques de peinture.', 
+   '25h', 'Intermédiaire', 
+   'src/assets/courses/carrosserie_peinture_2.jpg'),
+   
+  (12, 'Systèmes de Transmission', 
+   'Boîtes manuelles, automatiques, embrayages et différentiels.', 
+   '10h', 'Intermédiaire', 
+   'src/assets/courses/systemes_transmission.jpg');
 
--- Insertion de quelques cours avec ID explicite
-INSERT INTO Courses (course_id, title, description, duration, level, image_path)
-VALUES 
-(1, 'Introduction à la mécanique automobile', 'Ce cours couvre les bases de la mécanique automobile pour débutants', '10h', 'Débutant', 'https://example.com/courses/intro_mecanique.jpg'),
-(2, 'Diagnostic électronique avancé', 'Apprenez à diagnostiquer les problèmes électroniques complexes', '15h', 'Avancé', 'https://example.com/courses/diagnostic_electronique.jpg'),
-(3, 'Maintenance préventive', 'Techniques et bonnes pratiques pour la maintenance préventive des véhicules', '8h', 'Intermédiaire', 'https://example.com/courses/maintenance_preventive.jpg'),
-(4, 'Introduction to Medicine', 'Basic medical concepts', '10 hours', 'Beginner', '/images/intro-med.jpg'),
-(5, 'Advanced Cardiology', 'Deep dive into cardiac care', '20 hours', 'Advanced', '/images/cardio.jpg');
+-- Inserting Modules --
+INSERT INTO modules (module_id, course_id, title, description, image_path) VALUES
+  ('MOD001', 1, 'Optimisation de Climatisation - Partie 1', 
+   'Ce module couvre les aspects essentiels de Climatisation, section 1. Principes, composants, recharge, détection de fuites...', 
+   'src/assets/images/Optimisation_Climatisation_P1.jpg'),
+   
+  ('MOD002', 1, 'Réparer Climatisation - Partie 2', 
+   'Ce module couvre les aspects essentiels de Climatisation, section 2. Principes, composants, recharge, détection de fuites...', 
+   'src/assets/images/Reparer_Climatisation_P2.jpg'),
+   
+  ('MOD003', 1, 'Techniques avancées pour Climatisation - Partie 3', 
+   'Ce module couvre les aspects essentiels de Climatisation, section 3. Principes, composants, recharge, détection de fuites...', 
+   'src/assets/images/Techniques_Climatisation_P3.jpg');
+
+  
+  
+
+-- Inserting Quizzes --
+INSERT INTO quizzes (quiz_id, module_id, question_text, options, correct_answer) VALUES
+  (1, 1, 'Question 1 sur Optimisation de Climatisation - Partie 1?', ARRAY['Option A pour 1', 'Option B pour 1', 'Option C pour 1', 'Option D pour 1'], 'Option C pour 1'),
+  (2, 1, 'Question 2 sur Optimisation de Climatisation - Partie 1?', ARRAY['Option A pour 2', 'Option B pour 2', 'Option C pour 2', 'Option D pour 2'], 'Option C pour 2'),
+  (3, 1, 'Question 3 sur Optimisation de Climatisation - Partie 1?', ARRAY['Option A pour 3', 'Option B pour 3', 'Option C pour 3', 'Option D pour 3'], 'Option A pour 3');
+ 
+  
+-- Inserting User Module Progress --
+INSERT INTO user_module_progress (user_id, module_id, completed, completion_date) VALUES
+  (71, 21, True, NOW()),
+  (71, 5, True, NOW()),
+  (71, 59, True, NOW());
 
 
--- Insertion de quelques modules
-INSERT INTO Modules (module_id, course_id, title, duration)
-VALUES 
-('MOD001', 1, 'Les outils de base', '2h'),
-('MOD002', 1, 'Comprendre le moteur', '3h'),
-('MOD003', 1, 'Systèmes de freinage', '2h'),
-('MOD004', 1, 'Systèmes de transmission', '3h'),
-('MOD005', 2, 'Capteurs et actuateurs', '4h'),
-('MOD006', 2, 'Diagnostic OBD', '5h'),
-('MOD007', 2, 'Réparation des circuits', '6h'),
-('MOD008', 3, 'Planification de maintenance', '3h'),
-('MOD009', 3, 'Inspection des fluides', '2h'),
-('MOD010', 3, 'Remplacement des pièces dusure', '3h');
+-- Inserting Quiz Results --
+INSERT INTO quiz_results (user_id, module_id, score, total_questions, attempted_at) VALUES
+  (71, 21, 1, 6, NOW()),
+  (71, 5, 0, 6, NOW()),
+  (71, 76, 1, 6, NOW()),
+  (71, 46, 6, 6, NOW()),
+  (71, 9, 1, 6, NOW()),
+  (71, 33, 5, 6, NOW());
 
 
--- Insertion de quelques badges
-INSERT INTO Badges (title, description, image_path)
-VALUES 
-('Novice en mécanique', 'Obtenu après avoir terminé le cours dintroduction', 'https://example.com/badges/novice.png'),
-('Expert en diagnostic', 'Obtenu après avoir terminé le cours de diagnostic avancé', 'https://example.com/badges/expert_diagnostic.png'),
-('Maître de la maintenance', 'Obtenu après avoir terminé le cours de maintenance préventive', 'https://example.com/badges/maintenance_master.png'),
-('Premier pas', 'Obtenu après avoir terminé votre premier module', 'https://example.com/badges/first_step.png'),
-('Assidu', 'Obtenu après avoir complété 5 modules', 'https://example.com/badges/assiduous.png'),
-('First Steps', 'Completed first course', '/badges/first-steps.png'),
-('Expert Learner', 'Completed 5 courses', '/badges/expert.png');
 
--- Insert sample UserCourseEnrollment
-INSERT INTO UserCourseEnrollment (user_id, course_id, completion_status, progress) VALUES
-(1, 1, 'En cours', 50),
-(2, 2, 'En cours', 30);
-
--- Insert sample UserBadges
-INSERT INTO UserBadges (user_id, badge_id) VALUES
-(1, 1),
-(2, 1);
-
--- Insert sample UserModuleProgress
-INSERT INTO UserModuleProgress (user_id, module_id, completed) VALUES
-(1, 'MOD001', true),
-(1, 'MOD002', false),
-(2, 'MOD003', true);
-
--- Insert sample quiz questions
-INSERT INTO quizzes (module_id, question_text, options, correct_answer) 
-VALUES 
-    ('MOD001', 'What is the main purpose of a car engine?', 
-    ARRAY['To play music', 'To convert fuel into mechanical energy', 'To hold passengers', 'To control temperature'],
-    'To convert fuel into mechanical energy'),
-    
-    ('MOD001', 'Which of these is NOT a main component of an engine?',
-    ARRAY['Piston', 'Crankshaft', 'Radio', 'Cylinder'],
-    'Radio'),
-    
-    ('MOD002', 'What does the timing belt control?',
-    ARRAY['Radio timing', 'Valve timing', 'Window timing', 'Door timing'],
-    'Valve timing'),
-    
-    ('MOD002', 'How often should you check your engine oil?',
-    ARRAY['Never', 'Once a year', 'Monthly', 'Every few weeks'],
-    'Every few weeks');
-
--- Insert sample quiz results
-INSERT INTO quiz_results (user_id, module_id, score, total_questions)
-VALUES 
-    (1, 'MOD001', 8, 10),
-    (2, 'MOD001', 7, 10),
-    (1, 'MOD002', 9, 10);

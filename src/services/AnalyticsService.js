@@ -1,10 +1,10 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useLocalization } from '../context/LocalizationContext';
-import * as Analytics from 'expo-analytics';
+import * as Analytics from 'expo-firebase-analytics';
 
 // Initialize analytics tracker
-const analytics = new Analytics.Tracker('UA-XXXXXXXXX-X'); // Replace with actual tracking ID
+const analytics = Analytics; // Use expo-firebase-analytics directly
 
 /**
  * Analytics utility for tracking user behavior and app usage
@@ -120,13 +120,17 @@ class AnalyticsService {
  * Automatically tracks screen views when component mounts
  */
 export const withAnalytics = (ScreenComponent, screenName) => {
-  return (props) => {
+  const WrappedComponent = (props) => {
     React.useEffect(() => {
       AnalyticsService.trackScreenView(screenName);
     }, []);
 
     return <ScreenComponent {...props} />;
   };
+
+  WrappedComponent.displayName = `WithAnalytics(${screenName})`;
+
+  return WrappedComponent;
 };
 
 export default AnalyticsService;

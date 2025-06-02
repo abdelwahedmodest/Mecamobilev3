@@ -1,5 +1,5 @@
 // Importation des dépendances React nécessaires
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import {
   Button,
   Dimensions,     // Pour obtenir les dimensions de l'écran
@@ -10,17 +10,19 @@ import {
   Text,           // Pour afficher du texte
   TouchableOpacity, // Pour les boutons personnalisés
   View,           // Pour les conteneurs
-  Animated        // Pour les animations
+  Animated,       // Pour les animations
+  ActivityIndicator // Pour afficher un indicateur de chargement
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons'; // Pour les icônes Material Design
-import { LESSON_CONTENT } from '../data/courseData'; // Données des leçons
+import supabaseService from '../services/supabaseService';
 
 // Composant principal de l'écran de leçon
 const LessonScreen = ({ route, navigation }) => {
   // Extraction des paramètres de navigation
   const { moduleId, moduleTitle } = route.params;
-  // Récupération des données de la leçon
-  const lesson = LESSON_CONTENT[moduleId];
+  const [lesson, setLesson] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   
   // Références et états
   const scrollViewRef = useRef(null);                          // Référence pour le ScrollView
@@ -32,12 +34,45 @@ const LessonScreen = ({ route, navigation }) => {
   // Dimensions de l'écran (only keep what's used)
   const windowWidth = Dimensions.get('window').width;
 
-  // Gestion du cas où la leçon n'existe pas
-  if (!lesson) {
+  // Fetch lesson data from Supabase
+  useEffect(() => {
+    const fetchLesson = async () => {
+      try {
+        const moduleData = await supabaseService.getModuleById(moduleId);
+        if (moduleData) {
+          setLesson({
+            title: moduleData.title,
+            textContent: moduleData.description,
+            imageUrl: moduleData.image_path,
+            videoUrl: moduleData.video_url
+          });
+        }
+        setLoading(false);
+      } catch (err) {
+        console.error('Error fetching lesson:', err);
+        setError(err.message);
+        setLoading(false);
+      }
+    };
+
+    fetchLesson();
+  }, [moduleId]);
+
+  // Show loading state
+  if (loading) {
     return (
       <View style={styles.container}>
-        <Text style={styles.lessonTitle}>Contenu non trouvé</Text>
-        <Text>Le contenu de cette leçon est pas encore disponible.</Text>
+        <ActivityIndicator size="large" color="#EA3680" />
+      </View>
+    );
+  }
+
+  // Show error state
+  if (error || !lesson) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.lessonTitle}>Erreur de chargement</Text>
+        <Text>{error || 'Le contenu de cette leçon n\'est pas disponible.'}</Text>
         <Button title="Retour au module" onPress={() => navigation.goBack()} />
       </View>
     );

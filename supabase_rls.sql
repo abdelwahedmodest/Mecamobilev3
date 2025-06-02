@@ -1,11 +1,11 @@
 -- Enable Row Level Security on all tables
-ALTER TABLE Users ENABLE ROW LEVEL SECURITY;
-ALTER TABLE Courses ENABLE ROW LEVEL SECURITY;
-ALTER TABLE Modules ENABLE ROW LEVEL SECURITY;
-ALTER TABLE Badges ENABLE ROW LEVEL SECURITY;
-ALTER TABLE UserCourseEnrollment ENABLE ROW LEVEL SECURITY;
-ALTER TABLE UserBadges ENABLE ROW LEVEL SECURITY;
-ALTER TABLE UserModuleProgress ENABLE ROW LEVEL SECURITY;
+ALTER TABLE users ENABLE ROW LEVEL SECURITY;
+ALTER TABLE courses ENABLE ROW LEVEL SECURITY;
+ALTER TABLE modules ENABLE ROW LEVEL SECURITY;
+ALTER TABLE badges ENABLE ROW LEVEL SECURITY;
+ALTER TABLE user_course_enrollment ENABLE ROW LEVEL SECURITY;
+ALTER TABLE user_badges ENABLE ROW LEVEL SECURITY;
+ALTER TABLE user_module_progress ENABLE ROW LEVEL SECURITY;
 
 -- Enable RLS on quiz tables
 ALTER TABLE quizzes ENABLE ROW LEVEL SECURITY;
@@ -13,44 +13,47 @@ ALTER TABLE quiz_results ENABLE ROW LEVEL SECURITY;
 
 -- Users policies
 CREATE POLICY "Users can view their own profile"
-    ON Users FOR SELECT
+    ON users FOR SELECT
     USING (auth.uid()::text = user_id::text);
 
 -- Courses policies
 CREATE POLICY "Anyone can view courses"
-    ON Courses FOR SELECT
+    ON courses FOR SELECT
     USING (true);
 
 -- Modules policies
 CREATE POLICY "Anyone can view modules"
-    ON Modules FOR SELECT
+    ON modules FOR SELECT
     USING (true);
 
--- UserCourseEnrollment policies
+-- User course enrollment policies
 CREATE POLICY "Users can view their own enrollments"
-    ON UserCourseEnrollment FOR SELECT
+    ON user_course_enrollment FOR SELECT
     USING (auth.uid()::text = user_id::text);
 
 CREATE POLICY "Users can enroll themselves"
-    ON UserCourseEnrollment FOR INSERT
+    ON user_course_enrollment FOR INSERT
     WITH CHECK (auth.uid()::text = user_id::text);
 
--- UserModuleProgress policies
+-- User module progress policies
 CREATE POLICY "Users can view their own progress"
-    ON UserModuleProgress FOR SELECT
+    ON user_module_progress FOR SELECT
     USING (auth.uid()::text = user_id::text);
 
 CREATE POLICY "Users can update their own progress"
-    ON UserModuleProgress FOR UPDATE
+    ON user_module_progress FOR UPDATE
     USING (auth.uid()::text = user_id::text);
 
 -- Quiz policies
-CREATE POLICY "Enable read access for all users" ON quizzes
-    FOR SELECT USING (true);
+CREATE POLICY "Enable read access for all users" 
+    ON quizzes FOR SELECT
+    USING (true);
 
 -- Quiz results policies
-CREATE POLICY "Users can view their own results" ON quiz_results
-    FOR SELECT USING (auth.uid()::text = user_id::text);
+CREATE POLICY "Users can view their own results" 
+    ON quiz_results FOR SELECT
+    USING (auth.uid()::text = user_id::text);
 
-CREATE POLICY "Users can insert their own results" ON quiz_results
-    FOR INSERT WITH CHECK (auth.uid()::text = user_id::text);
+CREATE POLICY "Users can insert their own results" 
+    ON quiz_results FOR INSERT
+    WITH CHECK (auth.uid()::text = user_id::text);

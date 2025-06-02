@@ -344,41 +344,22 @@ class SupabaseService {
   // Gestion de la progression des modules
   async updateModuleProgress(userId, moduleId, completed) {
     try {
-      const { data: existingData, error: selectError } = await supabase
-        .from('user_module_progress')  // Changed from UserModuleProgress
-        .select('progress_id')
-        .eq('user_id', userId)
-        .eq('module_id', moduleId)
-        .maybeSingle();
-      if (selectError) throw selectError;
-      let result;
-      const progressData = {
-        user_id: userId,
-        module_id: moduleId,
-        completed: completed,
-        completion_date: completed ? new Date().toISOString() : null,
-      };
-      if (existingData) {
-        const { data, error: updateError } = await supabase
-          .from('UserModuleProgress')
-          .update(progressData)
-          .eq('progress_id', existingData.progress_id)
-          .select()
-          .single();
-        if (updateError) throw updateError;
-        result = data;
-      } else {
-        const { data, error: insertError } = await supabase
-          .from('UserModuleProgress')
-          .insert([progressData])
-          .select()
-          .single();
-        if (insertError) throw insertError;
-        result = data;
-      }
-      return result;
+      const { data, error } = await supabase
+        .from('user_module_progress')
+        .upsert([
+          {
+            user_id: userId,
+            module_id: moduleId,
+            completed: completed
+          }
+        ])
+        .select()
+        .single();
+
+      if (error) throw error;
+      return data;
     } catch (error) {
-      console.error('Erreur de mise à jour de la progression du module:', error.message);
+      console.error('Erreur de mise à jour de la progression:', error.message);
       throw error;
     }
   }
