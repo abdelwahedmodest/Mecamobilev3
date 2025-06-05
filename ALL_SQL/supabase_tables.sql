@@ -23,7 +23,8 @@ CREATE TABLE modules (
     module_id VARCHAR(20) PRIMARY KEY,
     course_id INTEGER REFERENCES courses(course_id),
     title VARCHAR(200) NOT NULL,
-    description TEXT,
+    description TEXT,      -- Keep for backwards compatibility
+    content TEXT,         -- New column for long-form content
     image_path TEXT,
     duration VARCHAR(20),
     created_at TIMESTAMPTZ DEFAULT NOW(),

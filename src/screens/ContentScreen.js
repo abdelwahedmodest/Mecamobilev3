@@ -21,13 +21,51 @@ const ContentScreen = ({ route, navigation }) => {
         setLoading(true);
         setError(null);
         const data = await supabaseService.getModuleById(moduleId);
+        
         if (!data) {
           throw new Error('Contenu du module non trouvé.');
         }
+
         setModuleData(data);
-        const contentText = data.content || data.text_content || ''; 
-        const splitSections = contentText.split('\n\n').filter(section => section.trim());
-        setSections(splitSections.length > 0 ? splitSections : ['Aucun contenu textuel disponible pour ce module.']);
+        const contentText = data.content || '';
+        
+        if (!contentText) {
+          throw new Error('Aucun contenu disponible pour ce module.');
+        }
+
+        // Changed section length to 1000 characters
+        const SECTION_LENGTH = 1000;
+        const processedSections = [];
+        let remainingText = contentText;
+
+        while (remainingText.length > 0) {
+          let sectionEnd = SECTION_LENGTH;
+          
+          // If we're not at the end of the text, find the last sentence break
+          if (remainingText.length > SECTION_LENGTH) {
+            const lastSentence = remainingText.substring(0, SECTION_LENGTH).match(/[^.!?]*[.!?](?=[^.!?]*$)/);
+            if (lastSentence) {
+              sectionEnd = remainingText.indexOf(lastSentence[0]) + lastSentence[0].length;
+            }
+          }
+
+          // Get the current section
+          const section = remainingText.substring(0, sectionEnd).trim();
+          if (section) {
+            processedSections.push(section);
+          }
+
+          // Update remaining text
+          remainingText = remainingText.substring(sectionEnd).trim();
+        }
+
+        if (processedSections.length === 0) {
+          throw new Error('Aucun contenu textuel disponible pour ce module.');
+        }
+
+        setSections(processedSections);
+        setCurrentIndex(0);
+        
       } catch (err) {
         console.error('Error fetching module content:', err);
         setError(err.message || 'Impossible de charger le contenu du module.');
@@ -80,128 +118,121 @@ const ContentScreen = ({ route, navigation }) => {
   }
 
   return (
-    <View style={styles.container}>
-      <ScrollView style={styles.scrollView}>
+    <ScrollView style={styles.mainScrollView}>
+      <View style={styles.container}>
+        {/* Title Area */}
         <Title style={styles.moduleTitle}>{moduleTitle}</Title>
-        
-        <ProgressBar progress={progress} color={colors.primary} style={styles.progressBar} />
-        <Text style={styles.progressText}>
-          Section {currentIndex + 1} / {sections.length}
-        </Text>
 
+        {/* Content Card */}
         <Card style={styles.card}>
-          <Card.Content>
-            {/* Display current section */} 
-            <Text style={styles.content}>{sections[currentIndex]}</Text>
-          </Card.Content>
+          <ScrollView style={styles.scrollView}>
+            <Card.Content>
+              <Text style={styles.content}>{sections[currentIndex]}</Text>
+            </Card.Content>
+          </ScrollView>
+          <View style={styles.progressContainer}>
+            <ProgressBar progress={progress} color={colors.primary} style={styles.progressBar} />
+            <Text style={styles.progressText}>
+              Section {currentIndex + 1} / {sections.length}
+            </Text>
+          </View>
         </Card>
-      </ScrollView>
 
-      <View style={styles.navigationButtons}>
-        <Button 
-          mode="contained" 
-          onPress={handlePrevious}
-          disabled={currentIndex === 0}
-          style={[styles.button, styles.previousButton]}
-          labelStyle={styles.buttonLabel}
-        >
-          Précédent
-        </Button>
-        <Button 
-          mode="contained" 
-          onPress={handleNext}
-          disabled={updatingProgress} // Disable while updating progress
-          style={[styles.button, styles.nextButton]}
-          labelStyle={styles.buttonLabel}
-        >
-          {currentIndex === sections.length - 1 ? (updatingProgress ? 'Terminé...' : 'Terminer') : 'Suivant'}
-        </Button>
+        {/* Navigation Buttons - Now part of the scrollable content */}
+        <View style={styles.navigationButtons}>
+          <Button 
+            mode="contained" 
+            onPress={handlePrevious}
+            disabled={currentIndex === 0}
+            style={[styles.button, styles.previousButton]}
+            labelStyle={styles.buttonLabel}
+          >
+            Précédent
+          </Button>
+          <Button 
+            mode="contained" 
+            onPress={handleNext}
+            disabled={updatingProgress}
+            style={[styles.button, styles.nextButton]}
+            labelStyle={styles.buttonLabel}
+          >
+            {currentIndex === sections.length - 1 ? 'Terminer' : 'Suivant'}
+          </Button>
+        </View>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  mainScrollView: {
     flex: 1,
-    backgroundColor: colors.background, // Use theme color
-  },
-  centeredContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
     backgroundColor: colors.background,
   },
-  loadingText: {
-    marginTop: 10,
-    fontSize: 16,
-    color: colors.text, // Use theme color
-  },
-  errorText: {
-    fontSize: 16,
-    color: colors.error, // Use theme color
-    textAlign: 'center',
-    marginBottom: 15,
-  },
-  scrollView: {
+  container: {
     flex: 1,
     padding: 16,
+    paddingBottom: 24, // Add extra padding at bottom
   },
   moduleTitle: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 16,
-    color: colors.text, // Use theme color
+    color: colors.text,
     textAlign: 'center',
-  },
-  progressBar: {
-    height: 8,
-    borderRadius: 4,
     marginBottom: 8,
   },
-  progressText: {
-    textAlign: 'center',
-    marginBottom: 16,
-    color: colors.lightText, // Use theme color
-  },
   card: {
-    marginBottom: 16,
-    elevation: 3,
-    borderRadius: 8,
-    backgroundColor: colors.cardBackground, // Use theme color
+    flex: 1,
+    minHeight: 400, // Ensure minimum height for content
+    marginBottom: 16, // Reduced margin since buttons are part of scroll
+  },
+  scrollView: {
+    flex: 1,
   },
   content: {
     fontSize: 16,
     lineHeight: 24,
-    color: colors.text, // Use theme color
+    color: colors.text,
     textAlign: 'justify',
+    paddingBottom: 16,
+  },
+  progressContainer: {
+    padding: 16,
+    borderTopWidth: 1,
+    borderTopColor: colors.border,
+  },
+  progressBar: {
+    height: 8,
+    borderRadius: 4,
+  },
+  progressText: {
+    textAlign: 'center',
+    marginTop: 8,
+    color: colors.lightText,
   },
   navigationButtons: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    backgroundColor: colors.background, // Use theme color
-    borderTopWidth: 1,
-    borderTopColor: colors.border, // Use theme color
+    paddingVertical: 8,
+    backgroundColor: colors.background,
+    // Remove position absolute since it's now part of scroll
   },
   button: {
     flex: 1,
     marginHorizontal: 8,
-    borderRadius: 20, // Rounded buttons
+    borderRadius: 20,
   },
   buttonLabel: {
-    fontSize: 14, // Smaller text
-    marginVertical: 6, // Adjust vertical padding
+    fontSize: 16,
+    fontWeight: '500',
+    paddingVertical: 4,
   },
   previousButton: {
-    backgroundColor: colors.secondary, // Use theme color
+    backgroundColor: colors.secondary,
   },
   nextButton: {
-    backgroundColor: colors.primary, // Use theme color
-  },
+    backgroundColor: colors.primary,
+  }
 });
 
 export default ContentScreen;
-

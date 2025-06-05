@@ -175,15 +175,39 @@ class SupabaseService {
 
   async getModuleById(moduleId) {
     try {
+      console.log('Fetching module:', moduleId);
       const { data, error } = await supabase
-        .from('modules')  // Changed from Modules
-        .select('*')
+        .from('modules')
+        .select(`
+          module_id,
+          course_id,
+          title,
+          description,
+          content,
+          image_path
+        `)
         .eq('module_id', moduleId)
         .single();
-      if (error && error.code !== 'PGRST116') throw error;
+
+      if (error) {
+        console.error('Supabase error:', error);
+        throw error;
+      }
+
+      if (data && data.content) {
+        // Clean up content formatting
+        data.content = data.content
+          .replace(/\\r\\n/g, '\n')  // Replace escaped newlines
+          .replace(/\\n/g, '\n')     // Replace escaped newlines
+          .replace(/\r\n/g, '\n')    // Replace Windows line endings
+          .replace(/\r/g, '\n')      // Replace remaining carriage returns
+          .trim();                    // Remove extra whitespace
+      }
+
+      console.log('Module content length:', data?.content?.length || 0);
       return data;
     } catch (error) {
-      console.error('Erreur de récupération du module:', error.message);
+      console.error('Error in getModuleById:', error);
       throw error;
     }
   }
