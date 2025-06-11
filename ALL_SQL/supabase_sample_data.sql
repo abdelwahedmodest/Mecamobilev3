@@ -12,7 +12,7 @@ INSERT INTO courses (course_id, title, description, duration, level, image_path)
   (1, 'Climatisation', 
    'Principes, composants, recharge, détection de fuites.', 
    '25h', 'Intermédiaire', 
-   'src/assets/courses/climatisation.jpg'),
+   'src/assets/images/courses/climatisation.jpg'),
    
   (2, 'Moteurs Thermiques', 
    'Principes de base, composants et fonctionnement des moteurs essence et diesel.', 
@@ -70,7 +70,7 @@ INSERT INTO courses (course_id, title, description, duration, level, image_path)
    'src/assets/courses/systemes_transmission.jpg');
 
 -- Inserting Modules --
-INSERT INTO modules (module_id, course_id, title, description, content, image_path) VALUES
+INSERT INTO modules (module_id, course_id, title, description, content, video_url, image_path) VALUES
 
 
 ('MOD001_CLIM1', 1, 'Comprendre Climatisation - Partie 4', 
@@ -167,6 +167,7 @@ Les systèmes à zones multiples permettent de régler des températures différ
 3. Les véhicules hybrides et électriques introduisent de nouvelles technologies de climatisation
 4. Un entretien préventif régulier prolonge la durée de vie du système et optimise son efficacité
 5. La formation continue est essentielle pour maîtriser ces technologies en constante évolution', 
+'https://www.youtube.com/watch?v=example1',
 'src/assets/images/Comprendre_Climatisation_-_Partie_4.jpg'),
 ('MOD002_CLIM1', 1, 'Optimisation de Climatisation - Partie 1', 
 'Module 1: Optimisation de Climatisation - Partie 1  ### Introduction et principes fondamentaux  **Objectifs pédagogiques:** - Comprendre le principe p...', 
