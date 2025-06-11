@@ -8,7 +8,7 @@ import colors from '../constants/colors';
 const VideoScreen = ({ route }) => {
   const { moduleId, moduleTitle } = route.params;
   const [moduleData, setModuleData] = useState(null);
-  const [playing, setPlaying] = useState(false);
+  const [playing, setPlaying] = useState(true); // Changed to true for auto-play
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -90,36 +90,32 @@ const VideoScreen = ({ route }) => {
   return (
     <View style={styles.container}>
       <Title style={styles.title}>{moduleTitle}</Title>
-      <View style={styles.videoContainer}>
-        {/* Show loader until player is ready */}
-        {loading && (
-          <ActivityIndicator 
-            style={styles.loader} 
-            size="large" 
-            color={colors.primary} 
-          />
-        )}
+      <View style={styles.playerWrapper}>
         <YoutubePlayer
-          height={220} // Adjust height as needed
+          height={250}
+          width="100%"
           play={playing}
           videoId={videoId}
           onChangeState={onStateChange}
           onError={onError}
-          onReady={() => setLoading(false)} // Hide loader when player is ready
-          webViewStyle={{ opacity: loading ? 0 : 1 }} // Hide webview until ready
+          onReady={() => setLoading(false)}
+          initialPlayerParams={{
+            preventFullScreen: false,
+            controls: true,
+            modestbranding: true,
+            autoplay: 1,
+            rel: 0
+          }}
+          webViewProps={{
+            allowsFullscreenVideo: true,
+            androidLayerType: 'hardware'
+          }}
         />
       </View>
       <View style={styles.infoContainer}>
-        {/* Display title from module data */}
-        <Text style={styles.videoTitle}>{moduleData.title || 'Titre non disponible'}</Text>
-        {/* Display description or relevant text from module data */}
-        {/* Adjust 'description' or 'text_content' based on your Supabase table */}
-        <Text style={styles.description}>
-          {moduleData.description || moduleData.text_content || 'Description non disponible.'}
-        </Text>
+        <Text style={styles.videoTitle}>{moduleData.title}</Text>
+        <Text style={styles.description}>{moduleData.description}</Text>
       </View>
-      {/* Add playback controls if needed */}
-      {/* <Button onPress={() => setPlaying(!playing)}>{playing ? 'Pause' : 'Play'}</Button> */}
     </View>
   );
 };
@@ -155,21 +151,23 @@ const styles = StyleSheet.create({
     color: colors.text,
     textAlign: 'center',
   },
-  videoContainer: {
+  playerWrapper: {
     width: '100%',
-    aspectRatio: 16 / 9, // Maintain aspect ratio
     backgroundColor: '#000',
     borderRadius: 8,
     overflow: 'hidden',
-    marginBottom: 16,
-    justifyContent: 'center', // Center loader
-    alignItems: 'center', // Center loader
-  },
-  loader: {
-    // Removed absolute positioning, centered by container
-    zIndex: 1,
+    marginVertical: 16,
+    height: 250,
+    alignItems: 'center',
+    justifyContent: 'center',
+    elevation: 4,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
   },
   infoContainer: {
+    marginTop: 16,
     padding: 16,
     backgroundColor: colors.surface,
     borderRadius: 8,

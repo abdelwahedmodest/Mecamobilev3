@@ -184,6 +184,7 @@ class SupabaseService {
           title,
           description,
           content,
+          video_url,
           image_path
         `)
         .eq('module_id', moduleId)
@@ -194,17 +195,9 @@ class SupabaseService {
         throw error;
       }
 
-      if (data && data.content) {
-        // Clean up content formatting
-        data.content = data.content
-          .replace(/\\r\\n/g, '\n')  // Replace escaped newlines
-          .replace(/\\n/g, '\n')     // Replace escaped newlines
-          .replace(/\r\n/g, '\n')    // Replace Windows line endings
-          .replace(/\r/g, '\n')      // Replace remaining carriage returns
-          .trim();                    // Remove extra whitespace
-      }
-
-      console.log('Module content length:', data?.content?.length || 0);
+      // Debug log
+      console.log('Module video URL:', data?.video_url);
+      
       return data;
     } catch (error) {
       console.error('Error in getModuleById:', error);
