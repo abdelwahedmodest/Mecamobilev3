@@ -7,6 +7,11 @@ import { AuthProvider } from './src/context/AuthContext';
 import AppNavigator from './src/navigation/AppNavigator';
 import { checkFirstLaunch } from './src/utils/storage';
 import { LocalizationProvider } from './src/context/LocalizationContext';
+import { polyfill } from 'web-streams-polyfill/ponyfill';
+
+if (typeof ReadableStream === 'undefined') {
+  polyfill();
+}
 
 export default function App() {
   const [isFirstLaunch, setIsFirstLaunch] = useState(null);

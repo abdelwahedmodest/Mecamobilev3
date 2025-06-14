@@ -12,62 +12,62 @@ INSERT INTO courses (course_id, title, description, duration, level, image_path)
   (1, 'Climatisation', 
    'Principes, composants, recharge, détection de fuites.', 
    '25h', 'Intermédiaire', 
-   'src/assets/images/courses/climatisation.jpg'),
+   './src/assets/images/courses/climatisation.jpg'),
    
   (2, 'Moteurs Thermiques', 
    'Principes de base, composants et fonctionnement des moteurs essence et diesel.', 
    '25h', 'Avancé', 
-   'src/assets/courses/moteurs_thermiques.jpg'),
+   './src/assets/courses/moteurs_thermiques.jpg'),
    
   (3, 'Véhicules Hybrides et Électriques', 
    'Technologies, batteries, moteurs électriques, maintenance spécifique.', 
    '15h', 'Avancé', 
-   'src/assets/courses/vehicules_hybrides.jpg'),
+   './src/assets/courses/vehicules_hybrides.jpg'),
    
   (4, 'Moteurs Thermiques', 
    'Principes de base, composants et fonctionnement des moteurs essence et diesel.', 
    '20h', 'Avancé', 
-   'src/assets/courses/moteurs_thermiques_2.jpg'),
+   './src/assets/courses/moteurs_thermiques_2.jpg'),
    
   (5, 'Électronique Embarquée', 
    'Capteurs, actuateurs, calculateurs (ECU), bus CAN.', 
    '10h', 'Débutant', 
-   'src/assets/courses/electronique_embarquee.jpg'),
+   './src/assets/courses/electronique_embarquee.jpg'),
    
   (6, 'Carrosserie et Peinture', 
    'Réparation des tôles, préparation des surfaces, techniques de peinture.', 
    '20h', 'Avancé', 
-   'src/assets/courses/carrosserie_peinture.jpg'),
+   './src/assets/courses/carrosserie_peinture.jpg'),
    
   (7, 'Climatisation', 
    'Principes, composants, recharge, détection de fuites.', 
    '10h', 'Débutant', 
-   'src/assets/courses/climatisation_2.jpg'),
+   './src/assets/courses/climatisation_2.jpg'),
    
   (8, 'Électronique Embarquée', 
    'Capteurs, actuateurs, calculateurs (ECU), bus CAN.', 
    '20h', 'Avancé', 
-   'src/assets/courses/electronique_embarquee_2.jpg'),
+   './src/assets/courses/electronique_embarquee_2.jpg'),
    
   (9, 'Sécurité Passive et Active', 
    'Airbags, prétensionneurs, systèmes d"aide à la conduite (ADAS).', 
    '5h', 'Intermédiaire', 
-   'src/assets/courses/securite_passive_active.jpg'),
+   './src/assets/courses/securite_passive_active.jpg'),
    
   (10, 'Climatisation', 
    'Principes, composants, recharge, détection de fuites.', 
    '25h', 'Intermédiaire', 
-   'src/assets/courses/climatisation_3.jpg'),
+   './src/assets/courses/climatisation_3.jpg'),
    
   (11, 'Carrosserie et Peinture', 
    'Réparation des tôles, préparation des surfaces, techniques de peinture.', 
    '25h', 'Intermédiaire', 
-   'src/assets/courses/carrosserie_peinture_2.jpg'),
+   './src/assets/courses/carrosserie_peinture_2.jpg'),
    
   (12, 'Systèmes de Transmission', 
    'Boîtes manuelles, automatiques, embrayages et différentiels.', 
    '10h', 'Intermédiaire', 
-   'src/assets/courses/systemes_transmission.jpg');
+   './src/assets/courses/systemes_transmission.jpg');
 
 -- Inserting Modules --
 INSERT INTO modules (module_id, course_id, title, description, content, video_url, image_path) VALUES
@@ -168,7 +168,7 @@ Les systèmes à zones multiples permettent de régler des températures différ
 4. Un entretien préventif régulier prolonge la durée de vie du système et optimise son efficacité
 5. La formation continue est essentielle pour maîtriser ces technologies en constante évolution', 
 'https://www.youtube.com/watch?v=wdoUF4PyYwQ',
-'src/assets/images/Comprendre_Climatisation_-_Partie_4.jpg'),
+'./src/assets/images/Comprendre_Climatisation_-_Partie_4.jpg'),
 ('MOD002_CLIM1', 1, 'Optimisation de Climatisation - Partie 1', 
 'Module 1: Optimisation de Climatisation - Partie 1  ### Introduction et principes fondamentaux  **Objectifs pédagogiques:** - Comprendre le principe p...', 
 'Module 1: Optimisation de Climatisation - Partie 1
@@ -245,7 +245,7 @@ Le système de climatisation fonctionne sur un principe thermodynamique simple: 
 3. Les systèmes modernes sont de plus en plus sophistiqués et automatisés
 4. Le compresseur est le composant qui consomme de l''énergie et impacte la consommation de carburant', 
 'https://www.youtube.com/watch?v=jx-zH69UyXk',
-'src/assets/images/Optimisation_de_Climatisation_-_Partie_1.jpg'),
+'./src/assets/images/Optimisation_de_Climatisation_-_Partie_1.jpg'),
 ('MOD003_CLIM1', 1, 'Réparer Climatisation - Partie 2', 
 'Module 2: Réparer Climatisation - Partie 2  ### Diagnostic et réparation des fuites de climatisation  **Objectifs pédagogiques:** - Identifier les sym...', 
 'Module 2: Réparer Climatisation - Partie 2
@@ -332,7 +332,7 @@ Procédure:
 4. Après réparation, un tirage au vide et une recharge précise sont essentiels
 5. Tous les travaux sur les circuits de climatisation nécessitent une certification professionnelle', 
 'https://www.youtube.com/watch?v=OnAkUxtC4VQ&list=PLv_A_MB4ansQ1Bn14QxAQexTGTLFCTc0q&index=2&pp=iAQB0gcJCbIJAYcqIYzv',
-'src/assets/images/Réparer_Climatisation_-_Partie_2.jpg'),
+'./src/assets/images/Réparer_Climatisation_-_Partie_2.jpg'),
 ('MOD004_CLIM1', 1, 'Réparer Climatisation - Partie 5', 
 'Module 5: Réparer Climatisation - Partie 5  ### Maintenance avancée et résolution de problèmes complexes  **Objectifs pédagogiques:** - Maîtriser les...', 
 'Module 5: Réparer Climatisation - Partie 5
@@ -469,7 +469,7 @@ Solutions:
 
 Ces leçons détaillées couvrent l''ensemble des aspects essentiels pour chaque module de formation sur la climatisation automobile, des principes fondamentaux aux techniques de diagnostic et de réparation les plus avancées.', 
 'https://www.youtube.com/watch?v=oOuAP8C5XuM&list=PLv_A_MB4ansQ1Bn14QxAQexTGTLFCTc0q&index=3&pp=iAQB',
-'src/assets/images/Réparer_Climatisation_-_Partie_5.jpg'),
+'./src/assets/images/Réparer_Climatisation_-_Partie_5.jpg'),
 ('MOD005_CLIM1', 1, 'Réparer Climatisation – Partie 6', 
 'Module 6 – Réparer Climatisation – Partie 6 Titre complet : Principes, Composants, Recharge et Détection de Fuite dans un Système de Climatisation   O...', 
 'Module 6 – Réparer Climatisation – Partie 6
@@ -557,7 +557,7 @@ Utiliser les bons outils pour recharger avec précision.
 
 Être capable de repérer rapidement une fuite.', 
 'https://www.youtube.com/watch?v=mpeQvAZMyqM&list=PLv_A_MB4ansQ1Bn14QxAQexTGTLFCTc0q&index=4&pp=iAQB',
-'src/assets/images/Réparer_Climatisation_-_Partie_6.jpg'),
+'./src/assets/images/Réparer_Climatisation_-_Partie_6.jpg'),
 ('MOD006_CLIM1', 1, 'Réparer Climatisation – Partie 8', 
 '️ Module 8 – Réparer Climatisation – Partie 8 Titre complet : Interventions courantes : remplacement de pièces, tests de performance, entretien périod...', 
 '️ Module 8 – Réparer Climatisation – Partie 8
@@ -582,7 +582,7 @@ Savoir comment intervenir sur un système de climatisation : remplacement de pi�
 Conclusion :
 Un bon entretien évite la plupart des pannes. Lors d’une réparation, toujours vérifier le bon fonctionnement complet du circuit après intervention', 
 'https://www.youtube.com/watch?v=055mQ91NXDE&list=PLv_A_MB4ansQ1Bn14QxAQexTGTLFCTc0q&index=5&pp=iAQB',
-'src/assets/images/Réparer_Climatisation_-_Partie_8.jpg'),
+'./src/assets/images/Réparer_Climatisation_-_Partie_8.jpg'),
 ('MOD007_CLIM1', 1, 'Techniques avancées pour Climatisation - Partie 3', 
 'Module 3: Techniques avancées pour Climatisation - Partie 3  ### Diagnostic avancé et optimisation des systèmes de climatisation  **Objectifs pédagogi...', 
 'Module 3: Techniques avancées pour Climatisation - Partie 3
@@ -668,7 +668,7 @@ Les climatisations modernes comportent de nombreux capteurs et actionneurs qui n
 4. L''optimisation des performances passe par un contrôle précis de tous les paramètres
 5. Une formation continue est nécessaire pour rester à jour avec les évolutions technologiques', 
 'https://www.youtube.com/watch?v=msCcFrUCE-Q&list=PLv_A_MB4ansQ1Bn14QxAQexTGTLFCTc0q&index=6&pp=iAQB',
-'src/assets/images/Techniques_avancées_pour_Climatisation_-_Partie_3.jpg'),
+'./src/assets/images/Techniques_avancées_pour_Climatisation_-_Partie_3.jpg'),
 ('MOD008_CLIM1', 1, '– Diagnostiquer Climatisation – Partie 7', 
 '️ Module 7 – Diagnostiquer Climatisation – Partie 7 Titre complet : Diagnostic et Analyse des Dysfonctionnements dans un Système de Climatisation  Obj...', 
 '️ Module 7 – Diagnostiquer Climatisation – Partie 7
@@ -701,7 +701,7 @@ Lorsque la climatisation d’un véhicule ne fonctionne pas comme prévu, il est
 Conclusion :
 Un bon diagnostic repose sur l’observation, les outils adéquats et la compréhension des cycles de fonctionnement de la climatisation. Il est toujours préférable de procéder par élimination logique.', 
 'https://www.youtube.com/watch?v=msCcFrUCE-Q&list=PLv_A_MB4ansQ1Bn14QxAQexTGTLFCTc0q&index=6&pp=iAQB',
-'src/assets/images/-_Diagnostiquer_Climatisation_-_Partie_7.jpg'),
+'./src/assets/images/-_Diagnostiquer_Climatisation_-_Partie_7.jpg'),
 ('MOD001_MOTEUR1', 2, 'Module 1 _ Les bases des moteurs thermiques', 
 'Formation approfondie pour techniciens automobiles spécialisés en moteurs thermiques Ce programme de 2000 heures combine théorie avancée et pratique i...', 
 'Formation approfondie pour techniciens automobiles spécialisés en moteurs thermiques
@@ -715,7 +715,7 @@ Le module approfondit le cycle de Beau de Rochas théorique et ses écarts prati
 
 où $ r $ est le taux de compression, $ \beta $ le rapport de combustion, et $ \epsilon $ le taux de détente[2]. Les travaux pratiques utilisent des indicateurs électroniques P-V pour mesurer les écarts réels atteignant 15-20% par rapport au cycle idéal[3].', 
 'https://www.youtube.com/watch?v=PXDFuIMHNZw',
-'src/assets/images/Module_1___Les_bases_des_moteurs_thermiques.jpg'),
+'./src/assets/images/Module_1___Les_bases_des_moteurs_thermiques.jpg'),
 ('MOD002_MOTEUR1', 2, 'Module 2 _ Optimisation des moteurs thermiques', 
 'Module 2 : Optimisation des moteurs thermiques - Stratégies de combustion (300 heures) Conception avancée des chambres de combustion L''optimisation gé...', 
 'Module 2 : Optimisation des moteurs thermiques - Stratégies de combustion (300 heures)
@@ -724,7 +724,7 @@ L''optimisation géométrique vise à maximiser le taux de compression effectif 
 Contrôle des phénomènes de cliquetis
 L''étude des combustions anormales intègre des capteurs piézoélectriques haute fréquence (200 kHz) pour détecter les ondes de pression caractéristiques. Les stratégies d''injection d''eau émulsionnée (rapport eau/carburant 30%) permettent de réduire la température de charge de 150°C, repoussant la limite de cliquetis de 3,5 points d''indice d''octane[3]. Les modèles prédictifs utilisent des réseaux de neurones convolutifs entraînés sur des bases de données de 50 000 cycles moteur.', 
 'https://www.youtube.com/watch?v=ZQvfHyfgBtA',
-'src/assets/images/Module_2___Optimisation_des_moteurs_thermiques.jpg'),
+'./src/assets/images/Module_2___Optimisation_des_moteurs_thermiques.jpg'),
 ('MOD003_MOTEUR1',2, 'Module 3 _ Optimisation des moteurs thermiques', 
 'Module 3 : Optimisation des moteurs thermiques - Suralimentation et gestion énergétique (350 heures) Architectures hybrides de suralimentation Ce modu...', 
 'Module 3 : Optimisation des moteurs thermiques - Suralimentation et gestion énergétique (350 heures)
@@ -735,7 +735,7 @@ L''étude des turbines à régénération électrique (EGR) analyse leur efficac
 
 où $ T_0 $ représente la température ambiante de référence[3]. Les systèmes ORC (Organic Rankine Cycle) utilisant du R1233zd(E) atteignent des rendements de conversion de 8-12% sur les gaz à 450°C.', 
 'https://www.youtube.com/watch?v=mWbEwkms-Ow&list=PLeFzfl0Q8rQUYuiNvQ_jw7gXEHtWEOun4&index=1&pp=iAQB',
-'src/assets/images/Module_3___Optimisation_des_moteurs_thermiques.jpg'),
+'./src/assets/images/Module_3___Optimisation_des_moteurs_thermiques.jpg'),
 ('MOD004_MOTEUR1',2, 'Module 4 _ Techniques avancées pour moteurs thermiques', 
 'Module 4 : Techniques avancées pour moteurs thermiques - Hybridation et durabilité (400 heures) Intégration des systèmes mild-hybrid 48V L''analyse dét...', 
 'Module 4 : Techniques avancées pour moteurs thermiques - Hybridation et durabilité (400 heures)
@@ -747,7 +747,7 @@ Ce volet intègre des capteurs IoT de nouvelle génération pour le monitoring v
 Conclusion : Vers une expertise polyvalente en propulsion thermique
 Ce programme intensif crée des techniciens capables d''intervenir sur l''ensemble de la chaîne énergétique des véhicules modernes. L''accent mis sur les méthodes de diagnostic avancées et les technologies d''optimisation énergétique prépare les apprenants aux défis de la transition vers des motorisations plus efficientes et moins polluantes[1][3]. Les compétences acquises permettent une intégration rapide dans les services R&D des constructeurs comme dans les ateliers haute technicité', 
 'https://www.youtube.com/watch?v=7_234bpI_-c&list=PLeFzfl0Q8rQUYuiNvQ_jw7gXEHtWEOun4&index=2&pp=iAQB',
-'src/assets/images/Module_4___Techniques_avancées_pour_moteurs_thermiques.jpg'),
+'./src/assets/images/Module_4___Techniques_avancées_pour_moteurs_thermiques.jpg'),
 ('MOD005_MOTEUR1',2, 'Module 5 _ Introduction aux moteurs thermiques - Gestion électronique embarquée', 
 'Module 5 : Introduction aux moteurs thermiques - Gestion électronique embarquée (300 heures) Architecture des calculateurs moteur Les systèmes de gest...', 
 'Module 5 : Introduction aux moteurs thermiques - Gestion électronique embarquée (300 heures)
@@ -756,7 +756,7 @@ Les systèmes de gestion modernes intègrent des microcontrôleurs 32 bits fonct
 Stratégies d''adaptation dynamique
 Les systèmes OBD-II (On-Board Diagnostics) utilisent des modèles neuronaux autorégressifs pour corriger les dérives de combustion. Les bancs de test simulent des conditions extrêmes (-40°C à +150°C) pour valider les algorithmes d''adaptation lambda[3]. Les études de cas incluent le diagnostic des capteurs de pression de suralimentation (MAP) défectueux causant des erreurs P0106, avec analyse des courbes caractéristiques de dérive thermique[1].', 
 'https://www.youtube.com/watch?v=NAXJ3knF18w&list=PLeFzfl0Q8rQUYuiNvQ_jw7gXEHtWEOun4&index=3&pp=iAQB',
-'src/assets/images/Module_5___Introduction_aux_moteurs_thermiques_-_Gestion_électronique_embarquée.jpg'),
+'./src/assets/images/Module_5___Introduction_aux_moteurs_thermiques_-_Gestion_électronique_embarquée.jpg'),
 ('MOD006_MOTEUR1',2, 'Module 6 _ Introduction aux moteurs thermiques - Post-traitement des émissions', 
 'Module 6 : Introduction aux moteurs thermiques - Post-traitement des émissions (350 heures) Technologies de réduction des NOx Les systèmes SCR (Select...', 
 'Module 6 : Introduction aux moteurs thermiques - Post-traitement des émissions (350 heures)
@@ -767,7 +767,7 @@ où α représente le ratio stoechiométrique NH3/NOx[2]. Les TP incluent le ré
 Régénération des filtres à particules
 Les stratégies de régénération passive utilisent des additifs cérium-based (FBC™) abaissant la température de combustion des suies à 450°C[2]. Pour les régénérations actives, les systèmes à injection de carburant en ligne (7 injections/cycle) élèvent les gaz d''échappement à 650°C pendant 15 minutes[4]. Les analyses thermographiques par caméra IR (8-14 µm) permettent de visualiser les gradients thermiques dans le DPF.', 
 'https://www.youtube.com/watch?v=eiY1fHcDqu0&list=PLeFzfl0Q8rQUYuiNvQ_jw7gXEHtWEOun4&index=4&pp=iAQB',
-'src/assets/images/Module_6___Introduction_aux_moteurs_thermiques_-_Post-traitement_des_émissions.jpg'),
+'./src/assets/images/Module_6___Introduction_aux_moteurs_thermiques_-_Post-traitement_des_émissions.jpg'),
 ('MOD007_MOTEUR1',2, 'Module 7 _ Techniques avancées pour moteurs thermiques - Hybridation électrique', 
 'Module 7 : Techniques avancées pour moteurs thermiques - Hybridation électrique (400 heures) Architectures de motorisations hybrides L''étude comparati...', 
 'Module 7 : Techniques avancées pour moteurs thermiques - Hybridation électrique (400 heures)
@@ -776,7 +776,7 @@ L''étude comparative des configurations série/parallèle/à dérivation de pui
 Gestion thermique des batteries
 Les modèles CFD simulent les écoulements de fluide caloporteur (50% eau/50% glycol) dans des cold plates à micro-canaux (200 µm)[1]. Les stratégies de préconditionnement utilisent des pompes à chaleur CO2 transcritiques avec COP de 2,8 à -20°C[2]. Les études de vieillissement accéléré (1000 cycles à 45°C) analysent la dégradation des anodes en graphite via spectroscopie EIS.', 
 'https://www.youtube.com/watch?v=fDwq4OR6FT8&list=PLeFzfl0Q8rQUYuiNvQ_jw7gXEHtWEOun4&index=5&pp=iAQB0gcJCbIJAYcqIYzv',
-'src/assets/images/Module_7___Techniques_avancées_pour_moteurs_thermiques_-_Hybridation_électrique.jpg'),
+'./src/assets/images/Module_7___Techniques_avancées_pour_moteurs_thermiques_-_Hybridation_électrique.jpg'),
 ('MOD008_MOTEUR1',2, 'Module 8 _ Techniques avancées pour moteurs thermiques - Diagnostic expert', 
 'Module 8 : Techniques avancées pour moteurs thermiques - Diagnostic expert (500 heures) Méthodologie d''analyse systémique Le processus en 7 étapes int...', 
 'Module 8 : Techniques avancées pour moteurs thermiques - Diagnostic expert (500 heures)
@@ -785,7 +785,7 @@ Le processus en 7 étapes intègre la théorie des graphes pour modéliser les d
 Outils de télédiagnostic avancé
 Les plateformes IoT utilisent le protocole MQTT over 5G pour le streaming de données à 1 Gbit/s[1]. Les algorithmes de machine learning (XGBoost) traitent des jeux de données de 10^6 véhicules pour détecter les anomalies corrélées. Les TP incluent la configuration de jumeaux numériques avec précision µs sur des simulateurs Hardware-in-the-Loop.', 
 'https://www.youtube.com/watch?v=ww0ottmbzes&list=PLeFzfl0Q8rQUYuiNvQ_jw7gXEHtWEOun4&index=6&pp=iAQB',
-'src/assets/images/Module_8___Techniques_avancées_pour_moteurs_thermiques_-_Diagnostic_expert.jpg'),
+'./src/assets/images/Module_8___Techniques_avancées_pour_moteurs_thermiques_-_Diagnostic_expert.jpg'),
 ('MOD001_HYBRIDE1', 3, 'Diagnostiquer Véhicules Hybrides et Électriques - Partie 1', 
 'Module 1 : Diagnostiquer Véhicules Hybrides et Électriques - Partie 1 Objectifs pédagogiques Comprendre les principes de base du diagnostic des véhicu...', 
 'Module 1 : Diagnostiquer Véhicules Hybrides et Électriques - Partie 1
@@ -829,7 +829,7 @@ Mise en sécurité d''un véhicule hybride
 Lecture de codes défauts avec outil de diagnostic
 Mesure de tensions haute tension en sécurité', 
 'https://www.youtube.com/watch?v=HkfB3V8kUoE&pp=ygUzSW50cm9kdWN0aW9uIMOgIFbDqWhpY3VsZXMgSHlicmlkZXMgZXQgw4lsZWN0cmlxdWVz',
-'src/assets/images/Diagnostiquer_Véhicules_Hybrides_et_Électriques_-_Partie_1.jpg'),
+'./src/assets/images/Diagnostiquer_Véhicules_Hybrides_et_Électriques_-_Partie_1.jpg'),
 ('MOD002_HYBRIDE1', 3, 'Diagnostiquer Véhicules Hybrides et Électriques - Partie 3', 
 'Module 3 : Diagnostiquer Véhicules Hybrides et Électriques - Partie 3 Objectifs pédagogiques Diagnostiquer les systèmes de refroidissement spécifiques...', 
 'Module 3 : Diagnostiquer Véhicules Hybrides et Électriques - Partie 3
@@ -890,7 +890,7 @@ Exercices pratiques
 Test d''étanchéité d''un circuit de refroidissement
 Diagnostic d''un chargeur embarqué défaillant', 
 'https://www.youtube.com/watch?v=0QrdheIPLjQ&pp=ygUzSW50cm9kdWN0aW9uIMOgIFbDqWhpY3VsZXMgSHlicmlkZXMgZXQgw4lsZWN0cmlxdWVz',
-'src/assets/images/Diagnostiquer_Véhicules_Hybrides_et_Électriques_-_Partie_3.jpg'),
+'./src/assets/images/Diagnostiquer_Véhicules_Hybrides_et_Électriques_-_Partie_3.jpg'),
 ('MOD003_HYBRIDE1', 3, 'Diagnostiquer Véhicules Hybrides et Électriques - Partie 4', 
 'Module 4 : Diagnostiquer Véhicules Hybrides et Électriques - Partie 4 Objectifs pédagogiques Maîtriser le diagnostic des systèmes hybrides complexes A...', 
 'Module 4 : Diagnostiquer Véhicules Hybrides et Électriques - Partie 4
@@ -955,7 +955,7 @@ Diagnostic d''une transmission eCVT
 Analyse des modes de fonctionnement hybride
 Test de synchronisation des moteurs-générateurs', 
 'https://www.youtube.com/watch?v=tJlMOn_DyrUhttps://www.youtube.com/watch?v=tJlMOn_DyrU',
-'src/assets/images/Diagnostiquer_Véhicules_Hybrides_et_Électriques_-_Partie_4.jpg'),
+'./src/assets/images/Diagnostiquer_Véhicules_Hybrides_et_Électriques_-_Partie_4.jpg'),
 ('MOD004_HYBRIDE1', 3, 'Introduction à Véhicules Hybrides et Électriques - Partie 7', 
 'Module 7 : Introduction à Véhicules Hybrides et Électriques - Partie 7 Objectifs pédagogiques Comprendre l''évolution technologique des véhicules élect...', 
 'Module 7 : Introduction à Véhicules Hybrides et Électriques - Partie 7
@@ -1022,7 +1022,7 @@ Analyse comparative de technologies de batteries
 Étude d''architecture 800V
 Configuration d''un système V2G', 
 'https://www.youtube.com/watch?v=tJfERzrG-D8&pp=ugMICgJmchABGAHKBTNJbnRyb2R1Y3Rpb24gw6AgVsOpaGljdWxlcyBIeWJyaWRlcyBldCDDiWxlY3RyaXF1ZXM%3D',
-'src/assets/images/Introduction_à_Véhicules_Hybrides_et_Électriques_-_Partie_7.jpg'),
+'./src/assets/images/Introduction_à_Véhicules_Hybrides_et_Électriques_-_Partie_7.jpg'),
 ('MOD005_HYBRIDE1', 3, 'Maintenance de Véhicules Hybrides et Électriques - Partie 5', 
 'Module 5 : Maintenance de Véhicules Hybrides et Électriques - Partie 5 Objectifs pédagogiques Planifier la maintenance préventive des véhicules électr...', 
 'Module 5 : Maintenance de Véhicules Hybrides et Électriques - Partie 5
@@ -1090,7 +1090,7 @@ Procédure de vidange d''un circuit de refroidissement batterie
 Remplacement d''un module de batterie haute tension
 Maintenance préventive d''un moteur électrique', 
 'https://www.youtube.com/watch?v=CWulQ1ZSE3c&pp=0gcJCbIJAYcqIYzv',
-'src/assets/images/Maintenance_de_Véhicules_Hybrides_et_Électriques_-_Partie_5.jpg'),
+'./src/assets/images/Maintenance_de_Véhicules_Hybrides_et_Électriques_-_Partie_5.jpg'),
 ('MOD006_HYBRIDE1',3, 'Maintenance de Véhicules Hybrides et Électriques - Partie 6', 
 'Module 6 : Maintenance de Véhicules Hybrides et Électriques - Partie 6 Objectifs pédagogiques Maîtriser la maintenance corrective avancée Gérer les in...', 
 'Module 6 : Maintenance de Véhicules Hybrides et Électriques - Partie 6
@@ -1162,7 +1162,7 @@ Réparation d''un faisceau haute tension endommagé
 Régénération d''un pack batterie dégradé
 Simulation d''intervention d''urgence', 
 'https://www.youtube.com/watch?v=wrMaocLE3j0&pp=ygUzSW50cm9kdWN0aW9uIMOgIFbDqWhpY3VsZXMgSHlicmlkZXMgZXQgw4lsZWN0cmlxdWVz',
-'src/assets/images/Maintenance_de_Véhicules_Hybrides_et_Électriques_-_Partie_6.jpg'),
+'./src/assets/images/Maintenance_de_Véhicules_Hybrides_et_Électriques_-_Partie_6.jpg'),
 ('MOD007_HYBRIDE1',3, 'Techniques Avancées pour Véhicules Hybrides et Électriques -PARTIE2', 
 'Module 2 : Techniques Avancées pour Véhicules Hybrides et Électriques - Partie 2 Objectifs pédagogiques Maîtriser les techniques de diagnostic avancée...', 
 'Module 2 : Techniques Avancées pour Véhicules Hybrides et Électriques -
@@ -1212,7 +1212,7 @@ Analyse de signaux PWM à l''oscilloscope
 Test de résistance d''isolement sur moteur électrique
 Diagnostic d''une panne intermittente simulée', 
 'https://www.youtube.com/watch?v=KW8jNvxomHI&pp=ygUzSW50cm9kdWN0aW9uIMOgIFbDqWhpY3VsZXMgSHlicmlkZXMgZXQgw4lsZWN0cmlxdWVz',
-'src/assets/images/Techniques_Avancées_pour_Véhicules_Hybrides_et_Électriques_-PARTIE2.jpg'),
+'./src/assets/images/Techniques_Avancées_pour_Véhicules_Hybrides_et_Électriques_-PARTIE2.jpg'),
 ('MOD008_HYBRIDE1', 3, 'Techniques Avancées pour Véhicules Hybrides et Électriques -PARTIE8', 
 'Module 8 : Techniques Avancées pour Véhicules Hybrides et Électriques - Partie 8 Objectifs pédagogiques Maîtriser les techniques de pointe en électrom...', 
 'Module 8 : Techniques Avancées pour Véhicules Hybrides et Électriques -
@@ -1319,7 +1319,7 @@ Habilitation pour intervention sur véhicules haute tension
 Reconnaissance professionnelle par les constructeurs partenaires
 Mise à jour continue des compétences par formation continue', 
 'https://www.youtube.com/watch?v=i7Rq0bN8eig&pp=ygUzSW50cm9kdWN0aW9uIMOgIFbDqWhpY3VsZXMgSHlicmlkZXMgZXQgw4lsZWN0cmlxdWVz',
-'src/assets/images/Techniques_Avancées_pour_Véhicules_Hybrides_et_Électriques_-PARTIE8.jpg'),
+'./src/assets/images/Techniques_Avancées_pour_Véhicules_Hybrides_et_Électriques_-PARTIE8.jpg'),
 ('MOD001_MOTEUR2',4, 'Introduction Moteurs Thermiques-Partie5', 
 'Module 13 : Introduction Moteurs Thermiques Contexte et Importance des Moteurs Thermiques Depuis plus d''un siècle, les moteurs thermiques constituent...', 
 'Module 13 : Introduction Moteurs Thermiques
@@ -1365,7 +1365,7 @@ PFA (Plateforme automobile). Consulté le 27 mai 2025, à l''adresse https://pfa
 wp-content/uploads/2020/06/DT_Moteurs-thermiques_2020_V12bis.pdf (Extrait du texte
 via pdftotext)', 
 'https://www.youtube.com/watch?v=zYMzE4xnjtc&list=PLeFzfl0Q8rQUYuiNvQ_jw7gXEHtWEOun4&index=7&pp=iAQB',
-'src/assets/images/Introduction_Moteurs_Thermiques-Partie5.jpg'),
+'./src/assets/images/Introduction_Moteurs_Thermiques-Partie5.jpg'),
 ('MOD002_MOTEUR2', 4, 'Les bases de Moteurs Thermiques - Partie 1', 
 'Module 9 : Les bases de Moteurs Thermiques - Partie 1 Introduction aux Principes Fondamentaux Le moteur thermique, au cœur de nombreux véhicules autom...', 
 'Module 9 : Les bases de Moteurs Thermiques - Partie 1
@@ -1454,7 +1454,7 @@ Source: * Tout savoir sur le fonctionnement du moteur d''une voiture ! - Lepermi
 Consulté le 27 mai 2025, à l''adresse https://www.lepermislibre.fr/code-route/cours/
 fonctionnement-moteur-voiture', 
 'https://www.youtube.com/watch?v=OjhHTo-l6R4',
-'src/assets/images/Les_bases_de_Moteurs_Thermiques_-_Partie_1.jpg'),
+'./src/assets/images/Les_bases_de_Moteurs_Thermiques_-_Partie_1.jpg'),
 ('MOD003_MOTEUR2',4, 'Optimisation de Moteurs Thermiques -PARTIE3', 
 'Module 11 : Optimisation de Moteurs Thermiques - Partie 3 Stratégies Avancées de Dilution et Cycles Thermodynamiques Modifiés Pour pousser plus loin l...', 
 'Module 11 : Optimisation de Moteurs Thermiques -
@@ -1495,7 +1495,7 @@ automobile). Consulté le 27 mai 2025, à l''adresse https://pfa-auto.fr/wp-cont
 uploads/2020/06/DT_Moteurs-thermiques_2020_V12bis.pdf (Extrait du texte via
 pdftotext)', 
 'https://www.youtube.com/watch?v=bvyHx-C2Xfs&pp=0gcJCckJAYcqIYzv',
-'src/assets/images/Optimisation_de_Moteurs_Thermiques_-PARTIE3.jpg'),
+'./src/assets/images/Optimisation_de_Moteurs_Thermiques_-PARTIE3.jpg'),
 ('MOD004_MOTEUR2',4, 'Optimisation de Moteurs Thermiques -PARTIE4', 
 'Module 12 : Optimisation de Moteurs Thermiques - Partie 4 Impact des Facteurs Externes et Systèmes Modernes sur le Rendement L''optimisation du rendeme...', 
 'Module 12 : Optimisation de Moteurs Thermiques -
@@ -1534,7 +1534,7 @@ Source: * Rendement d''un moteur thermique : calcul et optimisation - Autohero.
 Consulté le 27 mai 2025, à l''adresse https://www.autohero.com/fr/conseil/explorer/
 types-de-moteurs/combustion/rendement-moteur-thermique/', 
 'https://www.youtube.com/watch?v=XbboBLYNggc',
-'src/assets/images/Optimisation_de_Moteurs_Thermiques_-PARTIE4.jpg'),
+'./src/assets/images/Optimisation_de_Moteurs_Thermiques_-PARTIE4.jpg'),
 ('MOD005_MOTEUR2',4, 'Optimisation de Moteurs Thermiques -partie2', 
 'Module 10 : Optimisation de Moteurs Thermiques - Partie 2 Introduction à l''Optimisation du Rendement L''optimisation du rendement d''un moteur thermique...', 
 'Module 10 : Optimisation de Moteurs Thermiques -
@@ -1636,7 +1636,7 @@ automobile). Consulté le 27 mai 2025, à l''adresse https://pfa-auto.fr/wp-cont
 uploads/2020/06/DT_Moteurs-thermiques_2020_V12bis.pdf (Extrait du texte via
 pdftotext)', 
 'https://www.youtube.com/watch?v=1YouKc9E4uE',
-'src/assets/images/Optimisation_de_Moteurs_Thermiques_-partie2.jpg'),
+'./src/assets/images/Optimisation_de_Moteurs_Thermiques_-partie2.jpg'),
 ('MOD006_MOTEUR2',4, 'Systèmes d''Allumage et d''Injection-partie6', 
 'Module 14 : Systèmes d''Allumage et d''Injection Rôle Crucial de l''Injection Le système d''injection joue un rôle absolument fondamental dans le fonction...', 
 'Module 14 : Systèmes d''Allumage et d''Injection
@@ -1706,7 +1706,7 @@ www.fiches-auto.fr/articles-auto/fonctionnement-d-une-auto/s-807-fonctionnement 
 Aurel Automobile. Consulté le 28 mai 2025, à l''adresse https://www.aurel-automobile.fr/
 fr/tout-ce-qu--039-il-faut-savoir-sur-le-systeme-d--039-allumage-automobile---495', 
 'https://www.youtube.com/watch?v=9KKfIYch1FE',
-'src/assets/images/Systèmes_dAllumage_et_dInjection-partie6.jpg'),
+'./src/assets/images/Systèmes_dAllumage_et_dInjection-partie6.jpg'),
 ('MOD007_MOTEUR2',4, 'Systèmes de Suralimentation-PARTIE7', 
 'Module 15 : Systèmes de Suralimentation Principe et Objectifs de la Suralimentation La suralimentation est une technique essentielle dans l''ingénierie...', 
 'Module 15 : Systèmes de Suralimentation
@@ -1772,7 +1772,7 @@ mai 2025, à l''adresse https://www.lesfurets.com/assurance-auto/guide/turbo-ou 
 Compresseur - Automobile Sportive. Consulté le 28 mai 2025, à l''adresse https://
 www.automobile-sportive.com/technique/suralimentation.php', 
 'https://www.youtube.com/watch?v=8YIDOjD0oBI',
-'src/assets/images/Systèmes_de_Suralimentation-PARTIE7.jpg'),
+'./src/assets/images/Systèmes_de_Suralimentation-PARTIE7.jpg'),
 ('MOD008_MOTEUR2',4, 'Techniques avancées pour Moteurs-Partie8', 
 'Module 16 : Techniques avancées pour Moteurs Thermiques - Partie 8 Systèmes de Combustion Innovants et Rendement Thermodynamique La recherche de rende...', 
 'Module 16 : Techniques avancées pour Moteurs
@@ -1821,7 +1821,7 @@ de ces nouveaux vecteurs énergétiques dans les motorisations thermiques du fut
 notamment pour les applications où l''électrification complète est difficile (poids lourds,
 transport maritime, aéronautique).', 
 'https://www.youtube.com/watch?v=1_oXML7lcuM',
-'src/assets/images/Techniques_avancées_pour_Moteurs-Partie8.jpg'),
+'./src/assets/images/Techniques_avancées_pour_Moteurs-Partie8.jpg'),
 ('MOD001_EEMB1',5, 'Comprendre l''Électronique Embarquée – Partie 1', 
 'Absolument ! Voici une version développée de cette première leçon sur l''électronique embarquée, conçue pour être claire et accessible. Comprendre l''É...', 
 'Absolument ! Voici une version développée de cette première leçon sur l''électronique embarquée, conçue pour être claire et accessible.
@@ -1875,7 +1875,7 @@ L''électronique embarquée est partout autour de nous, souvent sans même que n
          * Dans les Télécommunications 🌐📞 : Les routeurs internet, les modems, les stations de base pour la téléphonie mobile, et même votre smartphone (qui est en soi un ensemble très complexe de multiples systèmes embarqués) dépendent de ces technologies pour gérer les flux de données et les communications.
 Cette liste est loin d''être exhaustive, mais elle vous donne une bonne idée de la diversité des applications de l''électronique embarquée.', 
 'https://www.youtube.com/watch?v=thkkdlZ7zs8',
-'src/assets/images/Comprendre_lÉlectronique_Embarquée_-_Partie_1.jpg'),
+'./src/assets/images/Comprendre_lÉlectronique_Embarquée_-_Partie_1.jpg'),
 ('MOD002_EEMB1', 5, 'Diagnostiquer l''Électronique Embarquée – Partie 2', 
 '﻿Voici une version développée pour votre leçon "Diagnostiquer l''Électronique Embarquée - Partie 2". Diagnostiquer l''Électronique Embarquée – Partie 2...', 
 '﻿Voici une version développée pour votre leçon "Diagnostiquer l''Électronique Embarquée - Partie 2".
@@ -1939,7 +1939,7 @@ Avec l''expérience, vous apprendrez à reconnaître certaines pannes qui revien
          * Corruption du firmware (logiciel embarqué) : Dans de rares cas, le programme stocké dans la mémoire Flash peut être corrompu, empêchant le système de démarrer correctement.
 Comprendre ces pannes typiques et savoir comment les rechercher en suivant une méthodologie structurée vous rendra beaucoup plus efficace dans vos diagnostics.', 
 'https://www.youtube.com/watch?v=c3QoGLlgPvA',
-'src/assets/images/Diagnostiquer_lÉlectronique_Embarquée_-_Partie_2.jpg'),
+'./src/assets/images/Diagnostiquer_lÉlectronique_Embarquée_-_Partie_2.jpg'),
 ('MOD003_EEMB1',5, 'Diagnostiquer l''Électronique Embarquée – Partie 3', 
 '﻿Voici une version développée pour votre leçon "Diagnostiquer l''Électronique Embarquée - Partie 3". Diagnostiquer l''Électronique Embarquée – Partie 3...', 
 '﻿Voici une version développée pour votre leçon "Diagnostiquer l''Électronique Embarquée - Partie 3".
@@ -2000,7 +2000,7 @@ Le grand intérêt de l''oscilloscope est de pouvoir visualiser la forme réelle
                   * Forme déformée : Le signal est présent, mais sa forme n''est pas celle attendue. Par exemple, un signal carré qui a les coins arrondis, une amplitude trop faible ou trop élevée, une fréquence incorrecte, ou des "glitches" (impulsions parasites). Ces déformations peuvent donner des indices précieux sur la nature de la panne.
 Apprendre à interpréter ces formes et ces anomalies demande de la pratique et une bonne connaissance du fonctionnement attendu du circuit que vous analysez. C''est une compétence clé pour tout technicien en électronique !', 
 'https://youtu.be/thkkdlZ7zs8?si=u2Owuv4iLOsgh2fc',
-'src/assets/images/Diagnostiquer_lÉlectronique_Embarquée_-_Partie_3.jpg'),
+'./src/assets/images/Diagnostiquer_lÉlectronique_Embarquée_-_Partie_3.jpg'),
 ('MOD004_EEMB1',5, 'Diagnostiquer l''Électronique Embarquée – Partie 4', 
 '﻿Voici une version développée pour votre leçon "Diagnostiquer l''Électronique Embarquée - Partie 4". Diagnostiquer l''Électronique Embarquée – Partie 4...', 
 '﻿Voici une version développée pour votre leçon "Diagnostiquer l''Électronique Embarquée - Partie 4".
@@ -2054,7 +2054,7 @@ Lorsque le programme est en pause (par exemple, à un point d''arrêt) ou pendan
 
 Identifier et corriger les bugs logiciels demande souvent de la patience, de la logique, et une bonne maîtrise de ces outils et techniques. C''est un aspect essentiel du développement et de la maintenance des systèmes électroniques embarqués.', 
 'https://www.youtube.com/watch?v=a9uP8A94VsQ',
-'src/assets/images/Diagnostiquer_lÉlectronique_Embarquée_-_Partie_4.jpg'),
+'./src/assets/images/Diagnostiquer_lÉlectronique_Embarquée_-_Partie_4.jpg'),
 ('MOD005_EEMB1',5, 'Diagnostiquer l''Électronique Embarquée – Partie 7', 
 '﻿Voici une version développée pour votre leçon "Diagnostiquer l''Électronique Embarquée - Partie 7". Diagnostiquer l''Électronique Embarquée – Partie 7...', 
 '﻿Voici une version développée pour votre leçon "Diagnostiquer l''Électronique Embarquée - Partie 7".
@@ -2124,7 +2124,7 @@ Pour des bus plus complexes comme le CAN, il existe des logiciels spécialisés 
 
 En combinant l''utilisation de ces outils avec une bonne compréhension du fonctionnement du bus que vous analysez, vous serez bien équipé pour traquer les défaillances de communication.', 
 'https://www.youtube.com/watch?v=hu9zYDUspP4&pp=ygUac3lzdGVtK2VtYmFycXVlK2F1dG9tb3RpdmU%3D',
-'src/assets/images/Diagnostiquer_lÉlectronique_Embarquée_-_Partie_7.jpg'),
+'./src/assets/images/Diagnostiquer_lÉlectronique_Embarquée_-_Partie_7.jpg'),
 ('MOD006_EEMB1',5, 'Introduction à l''Électronique Embarquée – Partie 5', 
 '﻿Voici une version développée pour votre leçon "Introduction à l''Électronique Embarquée - Partie 5". Introduction à l''Électronique Embarquée – Partie...', 
 '﻿Voici une version développée pour votre leçon "Introduction à l''Électronique Embarquée - Partie 5".
