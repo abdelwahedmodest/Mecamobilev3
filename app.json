@@ -25,23 +25,29 @@
     "ios": {
       "googleServicesFile": "./GoogleService-Info.plist"
     },
+    "plugins": [
+      "expo-font",
+      "expo-router",
+      "@react-native-firebase/app",
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "compileSdkVersion": 33,
+            "targetSdkVersion": 33,
+            "buildToolsVersion": "33.0.0"
+          },
+          "ios": { 
+            "useFrameworks": "static"
+          }
+        }
+      ]
+    ],
     "extra": {
       "eas": {
         "projectId": "a036bd00-ee8d-45c4-aacf-3136dc86f209"
       }
     },
-    "plugins": [
-      "expo-font",
-      "expo-router",
-      "@react-native-firebase/app",
-      "@react-native-firebase/analytics",
-      [
-        "expo-build-properties",
-        {
-          "ios": { "useFrameworks": "static" }
-        }
-      ]
-    ],
     "owner": "abdelwahedlast"
   }
 }
