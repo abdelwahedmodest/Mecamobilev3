@@ -19,16 +19,11 @@
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      },
-      "googleServicesFile": "./google-services.json"
-    },
-    "ios": {
-      "googleServicesFile": "./GoogleService-Info.plist"
+      }
     },
     "plugins": [
       "expo-font",
       "expo-router",
-      "@react-native-firebase/app",
       [
         "expo-build-properties",
         {
