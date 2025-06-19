@@ -15,6 +15,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons'; // Pour les icônes Material Design
 import supabaseService from '../services/supabaseService';
+import AdBanner from '../components/AdBanner'; // Importation du composant de bannière publicitaire
 
 // Composant principal de l'écran de leçon
 const LessonScreen = ({ route, navigation }) => {
@@ -212,6 +213,9 @@ const LessonScreen = ({ route, navigation }) => {
           <Icon name="keyboard-arrow-down" size={24} color="#ffffff" />
         </TouchableOpacity>
       </View>
+
+      {/* Composant de bannière publicitaire */}
+      <AdBanner />
     </View>
   );
 };

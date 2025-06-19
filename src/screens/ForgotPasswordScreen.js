@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Text, TextInput } from 'react-native-paper';
 import colors from '../constants/colors';
+import AdBanner from '../components/AdBanner';
 
 const ForgotPasswordScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -74,6 +75,7 @@ const ForgotPasswordScreen = ({ navigation }) => {
       >
         Envoyer les instructions
       </Button>
+      <AdBanner />
     </View>
   );
 };

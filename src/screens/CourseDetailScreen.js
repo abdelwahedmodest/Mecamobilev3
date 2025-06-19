@@ -4,6 +4,7 @@ import supabaseService from '../services/supabaseService';
 import colors from '../constants/colors';
 import { useAuth } from '../context/AuthContext'; // Change this import
 import { Card, Title as PaperTitle } from 'react-native-paper'; // Add this import at the top
+import AdBanner from '../components/AdBanner';
 
 const CourseDetailScreen = ({ route, navigation }) => {
   const { courseId } = route.params;
@@ -95,46 +96,49 @@ const CourseDetailScreen = ({ route, navigation }) => {
   }
 
   return (
-    <ScrollView style={styles.container}>
-      <Text style={styles.title}>{course.title}</Text>
-      {course.image && 
-        <Image source={course.image} style={styles.courseImage} resizeMode="cover" />
-      }
-      <Text style={styles.description}>{course.description}</Text>
-      
-      <Text style={styles.modulesHeader}>Modules du Cours :</Text>
-      {course.modules && course.modules.length > 0 ? (
-        course.modules.map(module => (
-          <Card 
-            key={module.id} 
-            style={styles.moduleCard}
-            onPress={() => navigation.navigate('ModuleType', { 
-              moduleId: module.id,
-              moduleTitle: module.title, 
-              courseId: course.id
-            })}
-          >
-            <Card.Content>
-              <PaperTitle style={styles.moduleTitle}>{module.title}</PaperTitle>
-              <Text style={styles.moduleDuration}>Durée : {module.duration}</Text>
-            </Card.Content>
-          </Card>
-        ))
-      ) : (
-        <Text style={styles.noModulesText}>Aucun module disponible pour ce cours pour le moment.</Text>
-      )}
+    <View style={styles.container}>
+      <ScrollView>
+        <Text style={styles.title}>{course.title}</Text>
+        {course.image && 
+          <Image source={course.image} style={styles.courseImage} resizeMode="cover" />
+        }
+        <Text style={styles.description}>{course.description}</Text>
+        
+        <Text style={styles.modulesHeader}>Modules du Cours :</Text>
+        {course.modules && course.modules.length > 0 ? (
+          course.modules.map(module => (
+            <Card 
+              key={module.id} 
+              style={styles.moduleCard}
+              onPress={() => navigation.navigate('ModuleType', { 
+                moduleId: module.id,
+                moduleTitle: module.title, 
+                courseId: course.id
+              })}
+            >
+              <Card.Content>
+                <PaperTitle style={styles.moduleTitle}>{module.title}</PaperTitle>
+                <Text style={styles.moduleDuration}>Durée : {module.duration}</Text>
+              </Card.Content>
+            </Card>
+          ))
+        ) : (
+          <Text style={styles.noModulesText}>Aucun module disponible pour ce cours pour le moment.</Text>
+        )}
 
-      <Card 
-        style={[styles.moduleCard, styles.enrollCard]}
-        onPress={handleEnroll}
-      >
-        <Card.Content>
-          <PaperTitle style={styles.enrollText}>
-            {enrolling ? "Inscription en cours..." : "S'inscrire à ce cours"}
-          </PaperTitle>
-        </Card.Content>
-      </Card>
-    </ScrollView>
+        <Card 
+          style={[styles.moduleCard, styles.enrollCard]}
+          onPress={handleEnroll}
+        >
+          <Card.Content>
+            <PaperTitle style={styles.enrollText}>
+              {enrolling ? "Inscription en cours..." : "S'inscrire à ce cours"}
+            </PaperTitle>
+          </Card.Content>
+        </Card>
+      </ScrollView>
+      <AdBanner />
+    </View>
   );
 };
 

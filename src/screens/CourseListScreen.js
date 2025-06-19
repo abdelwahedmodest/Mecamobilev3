@@ -4,6 +4,7 @@ import { Searchbar } from 'react-native-paper';
 import supabaseService from '../services/supabaseService'; // Import Supabase service
 import CourseCard from '../components/CourseCard';
 import colors from '../constants/colors';
+import AdBanner from '../components/AdBanner'; // Import AdBanner component
 
 const CourseListScreen = ({ navigation }) => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -108,6 +109,8 @@ const CourseListScreen = ({ navigation }) => {
           </Text>
         </View>
       )}
+
+      <AdBanner /> {/* Render the AdBanner component */}
     </View>
   );
 };

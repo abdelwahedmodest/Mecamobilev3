@@ -4,6 +4,7 @@ import { Text, Card, Title, Button, ProgressBar } from 'react-native-paper';
 import supabaseService from '../services/supabaseService';
 import colors from '../constants/colors';
 import { useAuth } from '../context/AuthContext';
+import AdBanner from '../components/AdBanner';
 
 const ContentScreen = ({ route, navigation }) => {
   const { moduleId, moduleTitle, courseId } = route.params;
@@ -159,6 +160,9 @@ const ContentScreen = ({ route, navigation }) => {
             {currentIndex === sections.length - 1 ? 'Terminer' : 'Suivant'}
           </Button>
         </View>
+
+        {/* Ad Banner - Always visible at the bottom */}
+        <AdBanner />
       </View>
     </ScrollView>
   );
